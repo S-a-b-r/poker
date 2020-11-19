@@ -8,6 +8,7 @@
             $app = new Application();
             switch($method){
                 case 'login': return $app ->login($params);
+                case 'getname': return $app ->getName();
             }
         }
         return false;
@@ -15,7 +16,7 @@
 
     function answer($data){
         if($data){
-            return array('result'=>'ok', 'data'=>data);
+            return array('result'=>'ok', 'data'=>$data);
         }
         return array('result'=>'error');
     }
