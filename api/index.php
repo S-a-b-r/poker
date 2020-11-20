@@ -9,6 +9,7 @@
             switch($method){
                 case 'login': return $app ->login($params);
                 case 'getname': return $app ->getName();
+                case 'registration': return $app ->registration($params);
             }
         }
         return false;

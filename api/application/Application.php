@@ -17,5 +17,9 @@
         public function getName(){
             return $this->db->getName();
         }
+
+        public function registration($params){
+            return $this->db->registrationUser($params['login'],$params['password'],$params['nickname']);
+        }
     }
 ?>

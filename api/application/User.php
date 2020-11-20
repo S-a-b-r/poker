@@ -13,5 +13,8 @@
                 return false;
             }
         }
+        public function registration($login,$password,$nickname){
+            $user = $this->db->registrationUser($login,$password,$nickname);
+        }
     }
 ?>

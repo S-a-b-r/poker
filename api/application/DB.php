@@ -20,13 +20,13 @@ class DB {
     public function getName(){
         $stmt = $this->db->prepare("SELECT * FROM testing_db");
         $stmt->execute();
-        return $stmt->fetch();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getUserByLogin($login) {
         $stmt = $this->conn->prepare("SELECT * FROM users WHERE login='$login'");
         $stmt->execute();
-        return $stmt->fetch();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function getUserByToken($token) {
@@ -39,6 +39,12 @@ class DB {
         $stmt = $this->conn->prepare("UPDATE users SET token='$token' WHERE id=$id");
         $stmt->execute();
         return true;
+    }
+
+    public function registrationUser($login,$password,$nickname){
+        $stmt = $this->db->prepare("INSERT INTO `users`( `login`, `password`, `nickname`, `money`, `stats`) VALUES ('klfdj','lkfjdlks','lfksdfk',1000, 2)");
+        $stmt->execute();
+        return $nickname;
     }
 
     public function createUser($nickname, $login, $hash, $token) {
