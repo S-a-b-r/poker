@@ -18,7 +18,7 @@ class DB {
     }
 
     public function getName(){
-        $stmt = $this->db->prepare("SELECT name FROM testing_db");
+        $stmt = $this->db->prepare("SELECT * FROM testing_db");
         $stmt->execute();
         return $stmt->fetch();
     }
