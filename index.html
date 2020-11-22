@@ -3,21 +3,38 @@
     <head>
         <title>Покер</title>
         <meta charset="UTF-8">
+        <link rel="stylesheet" type="text/css" href="public/style.css">
     </head>
     <body>
         <div>
-            <input id = 'login1'>
-            <input id = 'password1'>
-            <input id = 'nickname1'>
+            Логин:<input id = 'login1'>
+            Пароль:<input id = 'password1'>
+            Ник:<input id = 'nickname1'>
             <button id ='registration'>Регистрация</button>
         </div>
 
         <br>
 
         <div>
-            <input id = 'login2'>
-            <input id = 'password2'>
+            Логин:<input id = 'login2'>
+            Пароль<input id = 'password2'>
             <button id = 'logining'>Авторизация</button>
+        </div>
+
+        <br>
+
+        <div>
+            <button id='printTables'>Открыть меню столов</button>
+        </div>
+
+        <br>
+
+        <div>
+            Имя стола:<input id = 'name'>
+            Кол-во игроков:<input id = 'quantityPlayers'>
+            Ставки(минимальный взнос):<input if ='rates'>
+            Пароль(если надо):<input id = 'passwordTabl'>
+            <button id = 'createTable'>Создать свой стол</button>
         </div>
 
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

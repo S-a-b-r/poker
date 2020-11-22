@@ -15,6 +15,10 @@ var loginButton = document.getElementById('logining');
 var login2 = document.getElementById('login2');
 var password2 = document.getElementById('password2');
 
+var printTablesButton = document.getElementById('printTables');
+
+var createTableButton = document.getElementById('createTable');
+
 
 registrationButton.addEventListener('click',()=>{
     const promise = registration(login1.value,password1.value,nickname1.value);
@@ -23,6 +27,16 @@ registrationButton.addEventListener('click',()=>{
 
 loginButton.addEventListener('click',()=>{
     const promise = login(login2.value, password2.value);
+    promise.then(onDataReceived);
+})
+
+printTablesButton.addEventListener('click',()=>{
+    const promise = getAllTables();
+    promise.then(onDataReceived);
+})
+
+createTableButton.addEventListener('click',()=>{
+    const promise = createTable();
     promise.then(onDataReceived);
 })
 

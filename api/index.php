@@ -7,10 +7,9 @@
         if($method){
             $app = new Application();
             switch($method){
-                case 'login': return $app ->login($params);
-                case 'getname': return $app ->getName();
                 case 'registration': return $app ->registration($params);
                 case 'login': return $app ->login($params);
+                case 'getalltables': return $app ->getAllTables();
             }
         }
         return false;

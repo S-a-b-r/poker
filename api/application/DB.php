@@ -17,12 +17,6 @@ class DB {
         $this->db = null;
     }
 
-    public function getName(){
-        $stmt = $this->db->prepare("SELECT * FROM testing_db");
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
     public function getUserByLogin($login) {
         $stmt = $this->db->prepare("SELECT * FROM `users` WHERE login='$login'");
         $stmt->execute();
@@ -30,7 +24,12 @@ class DB {
             return $stmt->fetch(PDO::FETCH_ASSOC);
         }
         return null;
+    }
 
+    public function getAllTables() {
+        $stmt = $this->db->prepare("SELECT * FROM tables");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function registrationUser($login,$password,$nickname){
@@ -41,12 +40,6 @@ class DB {
         $stmt2->execute();
         return true;
     }
-
-    //public function getAllTables() {
-    //    $list_tables = $this->connect->prepare("SELECT * FROM tables");
-    //    $list_tables->execute();
-    //    return $list_tables->fetch();
-    //}
 
     //public function getTablesById($id) {
     //    $table = $this->connect->prepare("SELECT * FROM tables WHERE id =".$id);

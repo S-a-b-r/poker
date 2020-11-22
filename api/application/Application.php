@@ -4,6 +4,7 @@
     class Application{
         function __construct(){
             $this->user = new User();
+            $this->db = new DB();
         }
         
         public function login($params){
@@ -29,6 +30,10 @@
             }
             
             return $this->user->registration($login,$password,$nickname);
+        }
+
+        public function getAllTables(){
+            return $this->db->getAllTables();
         }
     }
 ?>
