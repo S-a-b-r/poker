@@ -3,8 +3,7 @@
     require_once('User.php');
     class Application{
         function __construct(){
-            $this->db = new DB();
-            $this->user = new User($this->db);
+            $this->user = new User();
         }
         
         public function login($params){
@@ -14,12 +13,22 @@
             return false;
         }
 
-        public function getName(){
-            return $this->db->getName();
-        }
-
         public function registration($params){
-            return $this->db->registrationUser($params['login'],$params['password'],$params['nickname']);
+            $login =  $params['login'];
+            $password = $params['password'];
+            $nickname = $params['nickname'];
+
+            if(strlen($login) < 3 || strlen($login) > 30 ){
+                return false;
+            }
+            elseif(strlen($password) < 5) {
+                return false;
+            }
+            elseif(strlen($nickname) < 3){
+                return false;
+            }
+            
+            return $this->user->registration($login,$password,$nickname);
         }
     }
 ?>

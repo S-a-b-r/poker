@@ -1,5 +1,9 @@
 <?php
     class User{
+        function __construct(){
+            $this->db = new DB();
+        }
+
         public function login($login, $hash, $rnd){
             $user = $this->db->getUserByLogin($login);
             if($user){
@@ -13,8 +17,13 @@
                 return false;
             }
         }
+
         public function registration($login,$password,$nickname){
-            $user = $this->db->registrationUser($login,$password,$nickname);
+            if($this->db->getUserByLogin($login)){
+                return false;
+            }
+            $password = md5($login.$password."qpalzm10");
+            return $this->db->registrationUser($login,$password,$nickname);
         }
     }
 ?>

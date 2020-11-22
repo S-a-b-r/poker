@@ -24,59 +24,67 @@ class DB {
     }
 
     public function getUserByLogin($login) {
-        $stmt = $this->conn->prepare("SELECT * FROM users WHERE login='$login'");
+        $stmt = $this->db->prepare("SELECT * FROM `users` WHERE login='$login'");
         $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        if($stmt){
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+        return null;
+
     }
 
-    public function getUserByToken($token) {
-        $stmt = $this->conn->prepare("SELECT * FROM users WHERE token='$token'");
-        $stmt->execute();
-        return $stmt->fetch();
-    }
-
-    public function updateToken($id, $token) {
-        $stmt = $this->conn->prepare("UPDATE users SET token='$token' WHERE id=$id");
+    public function registrationUser($login,$password,$nickname){
+        $stmt = $this->db->prepare("INSERT INTO `users` ( `login`, `password`, `nickname`, `money`) VALUES ('$login','$password','$nickname', 1000)");
         $stmt->execute();
         return true;
     }
 
-    public function registrationUser($login,$password,$nickname){
-        $stmt = $this->db->prepare("INSERT INTO `users`( `login`, `password`, `nickname`, `money`, `stats`) VALUES ('klfdj','lkfjdlks','lfksdfk',1000, 2)");
-        $stmt->execute();
-        return $nickname;
-    }
+    //public function getAllTables() {
+    //    $list_tables = $this->connect->prepare("SELECT * FROM tables");
+    //    $list_tables->execute();
+    //    return $list_tables->fetch();
+    //}
 
-    public function createUser($nickname, $login, $hash, $token) {
-        if ($nickname && $login && $hash && $token) {
-            $stmt = $this->conn->prepare("SELECT * FROM users WHERE login='$login'");
-            $stmt->execute();
-            if (!$stmt->fetch()) {
-                $stmt = $this->conn->prepare("INSERT INTO `users` (`name`, `login`, `password`, `token`) VALUES ('$nickname', '$login', '$hash', '$token')");
-                $stmt->execute();
-                return $token;
-            }
-        }
-        return false;
-    }
+    //public function getTablesById($id) {
+    //    $table = $this->connect->prepare("SELECT * FROM tables WHERE id =".$id);
+    //    $table->execute();
+    //    return $table->fetch();
+    //}
 
-    public function getHumanByUserId($userId) {
-        return (object) [
-            'x' => 1,
-            'y' => 1
-        ];
-    }
+    //public function getUserByToken($token) {
+    //    $stmt = $this->conn->prepare("SELECT * FROM users WHERE token='$token'");
+    //    $stmt->execute();
+    //    return $stmt->fetch();
+    //}
 
-    public function getAllTables() {
-        $list_tables = $this->connect->prepare("SELECT * FROM tables");
-        $list_tables->execute();
-        return $list_tables->fetch();
-    }
+    //public function updateToken($id, $token) {
+    //    $stmt = $this->conn->prepare("UPDATE users SET token='$token' WHERE id=$id");
+    //    $stmt->execute();
+    //    return true;
+    //}
 
-    public function getTablesById($id) {
-        $table = $this->connect->prepare("SELECT * FROM tables WHERE id =".$id);
-        $table->execute();
-        return $table->fetch();
-    }
+
+
+    //public function createUser($nickname, $login, $hash, $token) {
+    //    if ($nickname && $login && $hash && $token) {
+    //        $stmt = $this->conn->prepare("SELECT * FROM users WHERE login='$login'");
+    //        $stmt->execute();
+    //        if (!$stmt->fetch()) {
+    //            $stmt = $this->conn->prepare("INSERT INTO `users` (`name`, `login`, `password`, `token`) VALUES ('$nickname', '$login', '$hash', '$token')");
+    //            $stmt->execute();
+    //            return $token;
+    //        }
+    //    }
+    //    return false;
+    //}
+
+    //public function getHumanByUserId($userId) {
+    //    return (object) [
+    //        'x' => 1,
+    //        'y' => 1
+    //    ];
+    //}
+
+
 }
 ?>

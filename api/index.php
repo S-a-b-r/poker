@@ -10,6 +10,7 @@
                 case 'login': return $app ->login($params);
                 case 'getname': return $app ->getName();
                 case 'registration': return $app ->registration($params);
+                case 'login': return $app ->login($params);
             }
         }
         return false;

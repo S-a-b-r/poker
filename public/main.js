@@ -5,27 +5,30 @@
 //}
 //
 //const data = await request();
-var loginButton = document.getElementById('start');
-loginButton.addEventListener('click',registration);
+
+var registrationButton = document.getElementById('registration');
+var login1 = document.getElementById('login1');
+var password1 = document.getElementById('password1');
+var nickname1 = document.getElementById('nickname1');
+
+var loginButton = document.getElementById('logining');
+var login2 = document.getElementById('login2');
+var password2 = document.getElementById('password2');
 
 
-console.log(1);
-function getName(){
-    $.ajax('http://localhost/api/index.php?method=getname',{
-        success: function(data){
-            console.log(data);
-        }
-    });
+registrationButton.addEventListener('click',()=>{
+    const promise = registration(login1.value,password1.value,nickname1.value);
+    promise.then(onDataReceived);
+});
+
+loginButton.addEventListener('click',()=>{
+    const promise = login(login2.value, password2.value);
+    promise.then(onDataReceived);
+})
+
+
+function onDataReceived(data){
+    console.log(data);
 }
-function registration(){
-    var login = document.getElementById('logining').value;
-    var password = document.getElementById('password').value;
-    var nickname = document.getElementById('nickname').value;
-    $.ajax('http://localhost/api/index.php?method=registration&login='+login+'&password='+password+'&nickname='+nickname,{
-        success: function(data){
-            console.log(data);
-        }
-    })
-}
-console.log(2);
+
 //fetch('api',{method:'login', login:'vasya',password:'123'});
