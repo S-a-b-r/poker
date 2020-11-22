@@ -4,18 +4,17 @@
             $this->db = new DB();
         }
 
-        public function login($login, $hash, $rnd){
+        public function login($login, $password){
             $user = $this->db->getUserByLogin($login);
             if($user){
-                $hashS= md5($user->password.$rnd);
-                if($hashS == $hash){
+                $hash = md5($login.$password."qpalzm10");
+                $hashU = $user['password'];
+                if($hashU == $hash){
                     $token = md5($hash);
                     return $token;
                 }
             } 
-            else{
-                return false;
-            }
+            return false;
         }
 
         public function registration($login,$password,$nickname){

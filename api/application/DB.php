@@ -36,6 +36,9 @@ class DB {
     public function registrationUser($login,$password,$nickname){
         $stmt = $this->db->prepare("INSERT INTO `users` ( `login`, `password`, `nickname`, `money`) VALUES ('$login','$password','$nickname', 1000)");
         $stmt->execute();
+        $stmt->fetch();
+        $stmt2 = $this->db->prepare("INSERT INTO `stats` ( `win`, `loss`, `biggest_win`, `biggest_loss`) VALUES (0,0,0,0)");
+        $stmt2->execute();
         return true;
     }
 
