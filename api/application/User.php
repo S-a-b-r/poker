@@ -13,7 +13,7 @@
                     $token = md5($hash);
                     return $token;
                 }
-            } 
+            }
             return false;
         }
 
