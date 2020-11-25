@@ -25,6 +25,15 @@ class DB {
         }
         return null;
     }
+    
+    public function getUserByToken($token){
+        $stmt = $this->db->prepare("SELECT * FROM `users` WHERE token='$token'");
+        $stmt->execute();
+        if($stmt){
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+        return null;
+    }
 
     public function getAllTables() {
         $stmt = $this->db->prepare("SELECT * FROM tables");

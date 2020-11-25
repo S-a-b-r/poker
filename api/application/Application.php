@@ -1,10 +1,12 @@
 <?php
     require_once('DB.php');
     require_once('User.php');
+    require_once('Table.php');
+
     class Application{
         function __construct(){
             $this->user = new User();
-            $this->db = new DB();
+            $this->table = new Table();
         }
         
         public function login($params){
@@ -33,7 +35,25 @@
         }
 
         public function getAllTables(){
-            return $this->db->getAllTables();
+            return $this->table->getAllTables();
+        }
+
+        public function createTable($params){
+            $name = $params['name'];
+            $quant = (int)$params['quantplayers'];
+            if($quant >= 7){
+                $quant = 7;
+            }
+            elseif($quant <= 4){
+                $quant = 4;
+            }
+            $rates = $params['rates'];
+            $password = $params['password'];
+
+            if($name){
+                return $this->table->createTable($name, ($quant) || (6), ($rates) || (20), ($password) || null);
+            }
+            return false;
         }
     }
 ?>

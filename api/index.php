@@ -10,6 +10,7 @@
                 case 'registration': return $app ->registration($params);
                 case 'login': return $app ->login($params);
                 case 'getalltables': return $app ->getAllTables();
+                case 'createtable': return $app ->createTable($params);
             }
         }
         return false;

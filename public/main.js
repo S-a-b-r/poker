@@ -18,6 +18,10 @@ var password2 = document.getElementById('password2');
 var printTablesButton = document.getElementById('printTables');
 
 var createTableButton = document.getElementById('createTable');
+var nameTable = document.getElementById('nameTable');
+var quantPlayers = document.getElementById('quantityPlayers');
+var rates = document.getElementById('rates');
+var passwordTable = document.getElementById('passwordTable');
 
 
 registrationButton.addEventListener('click',()=>{
@@ -36,7 +40,7 @@ printTablesButton.addEventListener('click',()=>{
 })
 
 createTableButton.addEventListener('click',()=>{
-    const promise = createTable();
+    const promise = createTable(nameTable.value, quantPlayers.value, rates.value, passwordTable.value);
     promise.then(onDataReceived);
 })
 

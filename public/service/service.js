@@ -19,6 +19,9 @@ function getAllTables(){
     });
 }
 
-function createTable(){
-    //Дохерачить
+function createTable(name, quantPlayers, rates, password){
+    const promise = axios.post('http://localhost/api/index.php?method=createtable&name=' + name + '&quantplayers=' + quantPlayers + '&rates=' + rates + '&password=' + password);
+    return promise.then((response) =>{
+        return response.data;
+    });
 }
