@@ -11,6 +11,7 @@
                 case 'login': return $app ->login($params);
                 case 'getalltables': return $app ->getAllTables();
                 case 'createtable': return $app ->createTable($params);
+                case 'getuserbytoken': return $app ->getUserByToken($params);
             }
         }
         return false;

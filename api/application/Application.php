@@ -38,20 +38,41 @@
             return $this->table->getAllTables();
         }
 
+        public function getUserByToken($params){
+            return $this->user->getUserByToken($params['token']);
+        }
+
         public function createTable($params){
             $name = $params['name'];
+            $token = $params['token'];
             $quant = (int)$params['quantplayers'];
+            $rates = (int)$params['rates'];
+            $password = $params['password'];
+
+            //Обрабатываем исключения для кол-ва игроков
             if($quant >= 7){
                 $quant = 7;
             }
-            elseif($quant <= 4){
+            elseif($quant <= 4 || !$quant){
                 $quant = 4;
             }
-            $rates = $params['rates'];
-            $password = $params['password'];
 
-            if($name){
-                return $this->table->createTable($name, ($quant) || (6), ($rates) || (20), ($password) || null);
+            //Обрабатываем исключения для ставок
+            if($rates >= 10000){
+                $quant = 10000;
+            }
+            elseif($rates <= 20 || !$rates){
+                $rates = 20;
+            }
+
+            //Обрабатываем исключения для пароля
+            if(!$password){
+                $password = null;
+            }
+
+
+            if($name && $token){
+                return $this->table->createTable($token, $name, $quant, $rates, $password);
             }
             return false;
         }

@@ -5,6 +5,7 @@
 //}
 //
 //const data = await request();
+token = '5f4dcc3b5aa765d61d8327deb882cf99';
 
 var registrationButton = document.getElementById('registration');
 var login1 = document.getElementById('login1');
@@ -40,7 +41,7 @@ printTablesButton.addEventListener('click',()=>{
 })
 
 createTableButton.addEventListener('click',()=>{
-    const promise = createTable(nameTable.value, quantPlayers.value, rates.value, passwordTable.value);
+    const promise = createTable(token, nameTable.value, quantPlayers.value, rates.value, passwordTable.value);
     promise.then(onDataReceived);
 })
 

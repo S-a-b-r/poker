@@ -10,11 +10,14 @@
                 $hash = md5($login.$password."qpalzm10");
                 $hashU = $user['password'];
                 if($hashU == $hash){
-                    $token = md5($hash);
-                    return $token;
+                    return $user['token'];
                 }
             }
             return false;
+        }
+
+        public function getUserByToken($token){
+            return $this->db->getUserByToken($token);
         }
 
         public function registration($login,$password,$nickname){
@@ -22,7 +25,8 @@
                 return false;
             }
             $password = md5($login.$password."qpalzm10");
-            return $this->db->registrationUser($login,$password,$nickname);
+            $token = md5($password);
+            return $this->db->registrationUser($login, $password, $token, $nickname);
         }
     }
 ?>

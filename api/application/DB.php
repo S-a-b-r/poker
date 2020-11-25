@@ -41,12 +41,24 @@ class DB {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function registrationUser($login,$password,$nickname){
-        $stmt = $this->db->prepare("INSERT INTO `users` ( `login`, `password`, `nickname`, `money`) VALUES ('$login','$password','$nickname', 1000)");
+    public function registrationUser($login, $password, $token, $nickname){
+        $stmt = $this->db->prepare("INSERT INTO `users` ( `login`, `password`,`token`, `nickname`, `money`) VALUES ('$login','$password','$token','$nickname', 1000)");
         $stmt->execute();
         $stmt->fetch();
         $stmt2 = $this->db->prepare("INSERT INTO `stats` ( `win`, `loss`, `biggest_win`, `biggest_loss`) VALUES (0,0,0,0)");
         $stmt2->execute();
+        return true;
+    }
+
+    public function createTable($name, $quant, $rates, $password, $userId){
+        if($password){
+            $stmt = $this->db->prepare("INSERT INTO `tables`(`name`, `quantity_players`, `active_players_id`, `rates`, `password`) VALUES ('$name','$quant','$userId','$rates','$password')");
+            $stmt->execute();
+        }
+        else{
+            $stmt = $this->db->prepare("INSERT INTO `tables`(`name`, `quantity_players`, `active_players_id`, `rates`) VALUES ('$name','$quant','$userId','$rates')");
+            $stmt->execute();
+        }
         return true;
     }
 
@@ -56,31 +68,10 @@ class DB {
     //    return $table->fetch();
     //}
 
-    //public function getUserByToken($token) {
-    //    $stmt = $this->conn->prepare("SELECT * FROM users WHERE token='$token'");
-    //    $stmt->execute();
-    //    return $stmt->fetch();
-    //}
-
     //public function updateToken($id, $token) {
     //    $stmt = $this->conn->prepare("UPDATE users SET token='$token' WHERE id=$id");
     //    $stmt->execute();
     //    return true;
-    //}
-
-
-
-    //public function createUser($nickname, $login, $hash, $token) {
-    //    if ($nickname && $login && $hash && $token) {
-    //        $stmt = $this->conn->prepare("SELECT * FROM users WHERE login='$login'");
-    //        $stmt->execute();
-    //        if (!$stmt->fetch()) {
-    //            $stmt = $this->conn->prepare("INSERT INTO `users` (`name`, `login`, `password`, `token`) VALUES ('$nickname', '$login', '$hash', '$token')");
-    //            $stmt->execute();
-    //            return $token;
-    //        }
-    //    }
-    //    return false;
     //}
 
     //public function getHumanByUserId($userId) {
