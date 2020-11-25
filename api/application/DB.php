@@ -41,6 +41,18 @@ class DB {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getTableById($id){
+        $stmt = $this->db->prepare("SELECT * FROM tables WHERE id='$id'");
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function deleteTableById($id){
+        $stmt = $this->db->prepare("DELETE FROM `tables` WHERE id='$id'");
+        $stmt->execute();
+        return true;
+    }
+
     public function registrationUser($login, $password, $token, $nickname){
         $stmt = $this->db->prepare("INSERT INTO `users` ( `login`, `password`,`token`, `nickname`, `money`) VALUES ('$login','$password','$token','$nickname', 1000)");
         $stmt->execute();

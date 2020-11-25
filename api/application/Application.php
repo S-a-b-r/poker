@@ -38,6 +38,20 @@
             return $this->table->getAllTables();
         }
 
+        public function getTableById($params){
+            if($params['id']){
+                return $this->table->getTableById($params['id']);
+            }
+            return false;
+        }
+
+        public function deleteTableById($params){
+            if($params['id']){
+                return $this->table->deleteTableById($params['id']);
+            }
+            return false;
+        }
+
         public function getUserByToken($params){
             return $this->user->getUserByToken($params['token']);
         }
@@ -64,12 +78,6 @@
             elseif($rates <= 20 || !$rates){
                 $rates = 20;
             }
-
-            //Обрабатываем исключения для пароля
-            if(!$password){
-                $password = null;
-            }
-
 
             if($name && $token){
                 return $this->table->createTable($token, $name, $quant, $rates, $password);

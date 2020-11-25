@@ -26,8 +26,22 @@ function getAllTables(){
     });
 }
 
+function getTableById(id){
+    const promise = axios.get('http://localhost/api/index.php?method=gettablebyid&id='+id);
+    return promise.then((response) =>{
+        return response.data;
+    });
+}
+
 function createTable(token, name, quantPlayers, rates, password){
     const promise = axios.post('http://localhost/api/index.php?method=createtable&token=' + token + '&name=' + name + '&quantplayers=' + quantPlayers + '&rates=' + rates + '&password=' + password);
+    return promise.then((response) =>{
+        return response.data;
+    });
+}
+
+function deleteTableById(id){
+    const promise = axios.post('http://localhost/api/index.php?method=deletetablebyid&id='+id);
     return promise.then((response) =>{
         return response.data;
     });

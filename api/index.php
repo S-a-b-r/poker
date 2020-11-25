@@ -12,6 +12,8 @@
                 case 'getalltables': return $app ->getAllTables();
                 case 'createtable': return $app ->createTable($params);
                 case 'getuserbytoken': return $app ->getUserByToken($params);
+                case 'gettablebyid': return $app ->getTableById($params);
+                case 'deletetablebyid': return $app ->deleteTableById($params);
             }
         }
         return false;

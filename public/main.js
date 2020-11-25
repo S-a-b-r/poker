@@ -24,6 +24,12 @@ var quantPlayers = document.getElementById('quantityPlayers');
 var rates = document.getElementById('rates');
 var passwordTable = document.getElementById('passwordTable');
 
+var idTableForDelete = document.getElementById('idTableForDelete');
+var deleteTableButton = document.getElementById('deleteTable');
+
+var idTableForGet = document.getElementById('idTableForGet');
+var getTableButton = document.getElementById('getTable');
+
 
 registrationButton.addEventListener('click',()=>{
     const promise = registration(login1.value,password1.value,nickname1.value);
@@ -45,6 +51,15 @@ createTableButton.addEventListener('click',()=>{
     promise.then(onDataReceived);
 })
 
+getTableButton.addEventListener('click',()=>{
+    const promise = getTableById(idTableForGet.value);
+    promise.then(onDataReceived);
+})
+
+deleteTableButton.addEventListener('click',()=>{
+    const promise = deleteTableById(idTableForDelete.value);
+    promise.then(onDataReceived);
+})
 
 function onDataReceived(data){
     console.log(data);
