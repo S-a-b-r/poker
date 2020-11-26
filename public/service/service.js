@@ -12,6 +12,13 @@ function login(login,password){
     });
 }
 
+function logout(token){
+    const promise = axios.post('http://localhost/api/index.php?method=logout&token=' + token);
+    return promise.then((response) =>{
+        return response.data;
+    });
+}
+
 function getUserByToken(token){
     const promise = axios.get('http://localhost/api/index.php?method=getuserbytoken&token='+token);
     return promise.then((response) =>{

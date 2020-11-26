@@ -30,6 +30,8 @@ var deleteTableButton = document.getElementById('deleteTable');
 var idTableForGet = document.getElementById('idTableForGet');
 var getTableButton = document.getElementById('getTable');
 
+var logoutButton = document.getElementById('logout');
+
 
 registrationButton.addEventListener('click',()=>{
     const promise = registration(login1.value,password1.value,nickname1.value);
@@ -38,6 +40,11 @@ registrationButton.addEventListener('click',()=>{
 
 loginButton.addEventListener('click',()=>{
     const promise = login(login2.value, password2.value);
+    promise.then(onDataReceived);
+})
+
+logoutButton.addEventListener('click',()=>{
+    const promise = logout(token);
     promise.then(onDataReceived);
 })
 

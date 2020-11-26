@@ -14,6 +14,7 @@
                 case 'getuserbytoken': return $app ->getUserByToken($params);
                 case 'gettablebyid': return $app ->getTableById($params);
                 case 'deletetablebyid': return $app ->deleteTableById($params);
+                case 'logout': return $app ->logout($params);
             }
         }
         return false;

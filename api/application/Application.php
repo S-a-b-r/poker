@@ -16,6 +16,13 @@
             return false;
         }
 
+        public function logout($params){
+            if($params['token']){
+                return $this->user->logout($params['token']);
+            }
+            return false;
+        }
+
         public function registration($params){
             $login =  $params['login'];
             $password = $params['password'];

@@ -16,6 +16,11 @@
             return false;
         }
 
+        public function logout($token){
+            $token = null;
+            return true;
+        }
+
         public function getUserByToken($token){
             return $this->db->getUserByToken($token);
         }
