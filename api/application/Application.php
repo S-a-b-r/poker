@@ -2,11 +2,13 @@
     require_once('DB.php');
     require_once('User.php');
     require_once('Table.php');
+    require_once('Game.php');
 
     class Application{
         function __construct(){
             $this->user = new User();
             $this->table = new Table();
+            $this->game = new Game();
         }
         
         public function login($params){
@@ -39,6 +41,13 @@
             }
             
             return $this->user->registration($login,$password,$nickname);
+        }
+
+        public function getQuantPlayersOnTable($params){
+            if($params['id']){
+                return $this->table->getQuantPlayersOnTable($params['id']);
+            }
+            return false;
         }
 
         public function getAllTables(){
@@ -90,6 +99,28 @@
                 return $this->table->createTable($token, $name, $quant, $rates, $password);
             }
             return false;
+        }
+
+        public function connectToTable($params){
+            $token = $params['token'];
+            $tableId = $params['id'];
+            $user = $this->user->getUserByToken($token);
+            if($user){
+                $tables = $this->table->getTableById($tableId);
+                if($tables){
+                    $quant = $this->table->getQuantPlayersOnTable($tableId);
+                    if($quant < $tables['quantity_players']){
+                        return $this->table->connectToTable($user['id'], $tableId);//прописать
+                    }
+                    return false;
+                }
+                return false;
+            }
+            return false;
+        }
+
+        public function getRandomCard(){
+            return $this->game->getRandomCard();
         }
     }
 ?>

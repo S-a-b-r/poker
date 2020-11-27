@@ -32,6 +32,14 @@ var getTableButton = document.getElementById('getTable');
 
 var logoutButton = document.getElementById('logout');
 
+var idTableForConnect = document.getElementById('idTableForConnect');
+var connectToTableButton = document.getElementById('connectToTable');
+
+connectToTableButton.addEventListener('click',()=>{
+    const promise = connectToTable(token,idTableForConnect.value);
+    promise.then(onDataReceived);
+})
+
 
 registrationButton.addEventListener('click',()=>{
     const promise = registration(login1.value,password1.value,nickname1.value);

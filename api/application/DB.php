@@ -74,6 +74,20 @@ class DB {
         return true;
     }
 
+    public function connectToTable($userId, $tableId){
+        $players = $this->getActivePlayersId($tableId)['active_players_id'];
+        $players = $players." $userId";
+        $stmt = $this->db->prepare("UPDATE `tables` SET `active_players_id`='$players' WHERE id='$tableId'");
+        $stmt->execute();
+        return true;
+    }
+
+    public function getActivePlayersId($id){
+        $stmt = $this->db->prepare("SELECT `active_players_id` FROM tables WHERE id='$id'");
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     //public function getTablesById($id) {
     //    $table = $this->connect->prepare("SELECT * FROM tables WHERE id =".$id);
     //    $table->execute();

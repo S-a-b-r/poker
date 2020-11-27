@@ -20,5 +20,17 @@
             $userId = $this->db->getUserByToken($token)['id'];
             return $this->db->createTable($name, $quant, $rates, $password, $userId);
         }
+
+        public function connectToTable($userId, $tableId){
+            return $this->db->connectToTable($userId, $tableId);
+        }
+
+        public function disconnectFromTable($token, $tableId){}
+
+        public function getQuantPlayersOnTable($id){
+            $players = $this->db->getActivePlayersId($id)['active_players_id'];
+            $players = explode(" ", $players);
+            return count($players);
+        }
     }
 ?>

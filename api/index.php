@@ -15,6 +15,9 @@
                 case 'gettablebyid': return $app ->getTableById($params);
                 case 'deletetablebyid': return $app ->deleteTableById($params);
                 case 'logout': return $app ->logout($params);
+                case 'getrandomcard': return $app->getRandomCard();
+                case 'getquantplayersontable': return $app->getQuantPlayersOnTable($params);
+                case 'connecttotable': return $app->connectToTable($params);
             }
         }
         return false;
