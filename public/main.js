@@ -35,8 +35,15 @@ var logoutButton = document.getElementById('logout');
 var idTableForConnect = document.getElementById('idTableForConnect');
 var connectToTableButton = document.getElementById('connectToTable');
 
+var disconnectFromTableButton = document.getElementById('disconnectFromTable');
+
+disconnectFromTableButton.addEventListener('click', ()=>{
+    const promise = disconnectFromTable(token, idTableForConnect.value);
+    promise.then(onDataReceived);
+})
+
 connectToTableButton.addEventListener('click',()=>{
-    const promise = connectToTable(token,idTableForConnect.value);
+    const promise = connectToTable(token, idTableForConnect.value);
     promise.then(onDataReceived);
 })
 

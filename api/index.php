@@ -18,6 +18,7 @@
                 case 'getrandomcard': return $app->getRandomCard();
                 case 'getquantplayersontable': return $app->getQuantPlayersOnTable($params);
                 case 'connecttotable': return $app->connectToTable($params);
+                case 'disconnectfromtable': return $app->disconnectFromTable($params);//дописать!
             }
         }
         return false;

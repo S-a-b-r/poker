@@ -55,6 +55,13 @@ function connectToTable(token,id){
     });
 }
 
+function disconnectFromTable(token,id){
+    const promise = axios.get('http://localhost/api/index.php?method=disconnectfromtable&token=' + token + '&id=' + id);
+    return promise.then((response) =>{
+        return response.data;
+    });
+}
+
 //for admin
 function deleteTableById(id){
     const promise = axios.get('http://localhost/api/index.php?method=deletetablebyid&id='+id);
