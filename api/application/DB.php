@@ -35,6 +35,12 @@ class DB {
         return null;
     }
 
+    public function updateToken($id, $token) {
+        $stmt = $this->db->prepare("UPDATE users SET token='$token' WHERE id='$id'");
+        $stmt->execute();
+        return true;
+    }
+
     public function getAllTables() {
         $stmt = $this->db->prepare("SELECT * FROM tables");
         $stmt->execute();
@@ -94,11 +100,7 @@ class DB {
     //    return $table->fetch();
     //}
 
-    //public function updateToken($id, $token) {
-    //    $stmt = $this->conn->prepare("UPDATE users SET token='$token' WHERE id=$id");
-    //    $stmt->execute();
-    //    return true;
-    //}
+
 
     //public function getHumanByUserId($userId) {
     //    return (object) [

@@ -8,18 +8,23 @@
         public function login($login, $password){
             $user = $this->db->getUserByLogin($login);
             if($user){
-                $hash = md5($login.$password.$this->secret);
-                $hashU = $user['password'];
-                if($hashU == $hash){
-                    return $user['token'];
+                if(md5($login.$password.$this->secret) == $user['password']){
+                    $rand = rand (0,1000);
+                    $token = $user['password'].$rand;
+                    $this->db->updateToken($user['id'], $token);
+                    return $token;
                 }
             }
             return false;
         }
 
         public function logout($token){
-            $token = null;
-            return true;
+            $user = $this->db->getUserByToken($token);
+            if($user){
+                $this->db->updateToken($user['id'],null);
+                return true;
+            }
+            return false;
         }
 
         public function getUserByToken($token){
@@ -31,8 +36,7 @@
                 return false;
             }
             $password = md5($login.$password.$this->secret);
-            $token = md5($password);
-            return $this->db->registrationUser($login, $password, $token, $nickname);
+            return $this->db->registrationUser($login, $password, null, $nickname);
         }
     }
 ?>

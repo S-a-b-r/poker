@@ -25,7 +25,9 @@
             return $this->db->connectToTable($userId, $tableId);
         }
 
-        public function disconnectFromTable($token, $tableId){}
+        public function disconnectFromTable($userId, $tableId){
+            return $this->db->disconnectFromTable($userId,$tableId);
+        }
 
         public function getQuantPlayersOnTable($id){
             $players = $this->db->getActivePlayersId($id)['active_players_id'];
