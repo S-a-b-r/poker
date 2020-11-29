@@ -75,6 +75,12 @@ class DB {
         return null;
     }
 
+    public function getStatsById($id){
+        $stmt = $this->db->prepare("SELECT * FROM `stats` WHERE user_id='$id'");
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
 
     ////////////////////////////////////////////////
     ///////////////////TABLE////////////////////////

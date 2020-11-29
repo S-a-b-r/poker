@@ -74,6 +74,13 @@
             return false;
         }
 
+        public function getStatsById($params){
+            if($params['id']){
+                return $this->user->getStatsById($params['id']);
+            }
+            return false;
+        }
+
 
 
         ////////////////////////////////////////////////

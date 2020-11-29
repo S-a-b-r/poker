@@ -62,5 +62,13 @@
         public function getUserById($id){
             return $this->db->getuserbyid($id);
         }
+
+        public function getStatsById($id){
+            $user = $this->db->getUserById($id);
+            if($user){
+                return $this->db->getStatsById($id);
+            }
+            return false;
+        }
     }
 ?>
