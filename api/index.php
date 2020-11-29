@@ -7,18 +7,22 @@
         if($method){
             $app = new Application();
             switch($method){
+                //POST
                 case 'registration': return $app ->registration($params);
                 case 'login': return $app ->login($params);
-                case 'getalltables': return $app ->getAllTables();
                 case 'createtable': return $app ->createTable($params);
+                case 'deletetablebyid': return $app ->deleteTableById($params);//test
+                case 'logout': return $app ->logout($params);
+                case 'connecttotable': return $app->connectToTable($params);
+                case 'disconnectfromtable': return $app->disconnectFromTable($params);
+
+                //GET
+                case 'getalltables': return $app ->getAllTables();
                 case 'getuserbytoken': return $app ->getUserByToken($params);
                 case 'gettablebyid': return $app ->getTableById($params);
-                case 'deletetablebyid': return $app ->deleteTableById($params);
-                case 'logout': return $app ->logout($params);
                 case 'getrandomcard': return $app->getRandomCard();
                 case 'getquantplayersontable': return $app->getQuantPlayersOnTable($params);
-                case 'connecttotable': return $app->connectToTable($params);
-                case 'disconnectfromtable': return $app->disconnectFromTable($params);//дописать!
+
             }
         }
         return false;
@@ -30,6 +34,10 @@
         }
         return array('result'=>'error');
     }
-
-    echo(json_encode(answer(router($_GET))));
+    if($_GET){
+        echo(json_encode(answer(router($_GET))));
+    }
+    elseif($_POST){
+        echo(json_encode(answer(router($_POST))));
+    }
 ?>

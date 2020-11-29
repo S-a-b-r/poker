@@ -1,5 +1,10 @@
 function registration(login,password,nickname){
-    const promise = axios.get('http://localhost/api/index.php?method=registration&login='+login+'&password='+password+'&nickname='+nickname);
+    const params = new URLSearchParams();
+    params.append('method','registration');
+    params.append('login',login);
+    params.append('password',password);
+    params.append('nickname',nickname);
+    const promise = axios.post('http://localhost/api/index.php?',params);
     return promise.then((response) =>{
         return response.data;
     });

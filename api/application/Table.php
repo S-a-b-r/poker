@@ -26,11 +26,15 @@
         }
 
         public function disconnectFromTable($userId, $tableId){
+            $quant = $this->getQuantPlayersOnTable($tableId);
+            if($quant == 1){
+                return $this->db->deleteTableById($tableId);
+            }
             return $this->db->disconnectFromTable($userId,$tableId);
         }
 
         public function getQuantPlayersOnTable($id){
-            $players = $this->db->getActivePlayersId($id)['active_players_id'];
+            $players = $this->db->getTableById($id)['active_players_id'];
             $players = explode(" ", $players);
             return count($players);
         }

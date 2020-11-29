@@ -119,6 +119,14 @@
             return false;
         }
 
+        public function disconnectFromTable($params){
+            $user = $this->user->getUserByToken($params['token']);
+            if($user && $params['id']){
+                return $this->table->disconnectFromTable($user['id'], $params['id']);
+            }
+            return false;
+        }
+
         public function getRandomCard(){
             return $this->game->getRandomCard();
         }
