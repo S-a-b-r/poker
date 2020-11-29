@@ -32,7 +32,7 @@ class DB {
     }
 
     public function registrationUser($login, $password, $token, $nickname){
-        $stmt = $this->db->prepare("INSERT INTO `users` ( `login`, `password`,`token`, `nickname`, `money`) VALUES ('$login','$password','$token','$nickname', 1000)");
+        $stmt = $this->db->prepare("INSERT INTO `users` ( `login`, `password`,`token`, `nickname`, `money`, `bank`) VALUES ('$login','$password','$token','$nickname', 1000, 0)");
         $stmt->execute();
         $stmt->fetch();
         $stmt2 = $this->db->prepare("INSERT INTO `stats` ( `win`, `loss`, `biggest_win`, `biggest_loss`) VALUES (0,0,0,0)");
@@ -40,7 +40,11 @@ class DB {
         return true;
     }
 
-
+    public function transferMoney($id, $activeMoney, $bank){
+        $stmt = $this->db->prepare("UPDATE `users` SET `money`=$activeMoney,`bank`=$bank WHERE `id` = $id");
+        $stmt->execute();
+        return true;
+    }
 
     //GET
 
@@ -125,7 +129,7 @@ class DB {
     }
 
 
-    
+
     //GET
 
     public function getAllTables() {

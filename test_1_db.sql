@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Ноя 26 2020 г., 23:37
+-- Время создания: Ноя 30 2020 г., 01:14
 -- Версия сервера: 10.3.22-MariaDB
 -- Версия PHP: 7.1.33
 
@@ -87,7 +87,22 @@ INSERT INTO `stats` (`user_id`, `win`, `loss`, `biggest_win`, `biggest_loss`, `d
 (44, 0, 0, 0, 0, '2020-11-26'),
 (45, 0, 0, 0, 0, '2020-11-26'),
 (46, 0, 0, 0, 0, '2020-11-26'),
-(47, 0, 0, 0, 0, '2020-11-26');
+(47, 0, 0, 0, 0, '2020-11-26'),
+(48, 0, 0, 0, 0, '2020-11-27'),
+(49, 0, 0, 0, 0, '2020-11-27'),
+(50, 0, 0, 0, 0, '2020-11-27'),
+(51, 0, 0, 0, 0, '2020-11-27'),
+(52, 0, 0, 0, 0, '2020-11-27'),
+(53, 0, 0, 0, 0, '2020-11-27'),
+(54, 0, 0, 0, 0, '2020-11-28'),
+(55, 0, 0, 0, 0, '2020-11-28'),
+(56, 0, 0, 0, 0, '2020-11-29'),
+(57, 0, 0, 0, 0, '2020-11-29'),
+(58, 0, 0, 0, 0, '2020-11-29'),
+(59, 0, 0, 0, 0, '2020-11-29'),
+(60, 0, 0, 0, 0, '2020-11-29'),
+(61, 0, 0, 0, 0, '2020-11-29'),
+(62, 0, 0, 0, 0, '2020-11-30');
 
 -- --------------------------------------------------------
 
@@ -117,11 +132,8 @@ INSERT INTO `tables` (`id`, `name`, `quantity_players`, `active_players_id`, `ra
 (7, '43534', 7, '44', 43543, '5465'),
 (8, '435345', 4, '44', 20, '5465'),
 (9, '435345', 4, '44', 20, ''),
-(10, '34243', 4, '44', 324, ''),
-(11, '232342', 20, '44', 0, ''),
-(12, '432432', 4, '44', 20, ''),
-(13, '432432', 4, '44', 20, '32'),
-(14, '32132', 7, '44', 543, NULL),
+(10, '34243', 4, '44 45 65 344 434', 324, ''),
+(11, '232342', 20, '44 44', 0, ''),
 (15, '32132', 7, '44', 543, '432'),
 (16, '3456', 4, '44', 654, '65');
 
@@ -137,59 +149,74 @@ CREATE TABLE `users` (
   `password` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `token` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `nickname` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `money` int(11) NOT NULL
+  `money` int(11) NOT NULL,
+  `bank` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Дамп данных таблицы `users`
 --
 
-INSERT INTO `users` (`id`, `login`, `password`, `token`, `nickname`, `money`) VALUES
-(1, 'sabr', 'f4a83a74eaba00a84657bcaa38e845c7', '', '432432', 1000),
-(2, '43243', '5fc0605e8bbe46582705224bff1ef4cd', '', '43243', 1000),
-(3, '432342', '68c4852c4068d470f26d714bedd3ecfd', '', '654654', 1000),
-(4, '4324', '91a1fe14a6425c7eb6392950edbd29a1', '', '43243', 1000),
-(5, '54354', '9c473d4b62bfd9ac111b8ce43353e4f2', '', '654654', 1000),
-(6, '43233243', '4176e66c6b297e0cfd02348ebe42fb5d', '', '5435345', 1000),
-(7, '543543', '4ee540092e52f89afa40e2684cc3925f', '', '543543', 1000),
-(8, '5435437', '2e64c70b804b427c7af7f2c51da6905f', '', '543543', 1000),
-(9, '56465', '1faf023fc4778fa55e018e957b3739df', '', '76576', 1000),
-(10, '564650', '1d3d0f285c477abdd43dd6c44c1929b2', '', '76576', 1000),
-(11, 'tret', 'd372be6504b2b0bb98731e25fdc069d7', '', '6546545', 1000),
-(12, '5435435', '4db1feff030dca17313515fbf970899c', '', '534543', 1000),
-(14, '54534', '5555703f48cb0c0a0219bfd63639f32e', '', '43354353', 1000),
-(15, 'tr45tre', 'f422641ed7632667cd719cb6aa80c4f8', '', 'ereter', 1000),
-(16, 'kjhbvh', 'eabc237bb06e797bea9b83dbe5867189', '', 'gdfgvc', 1000),
-(17, 'kjhbvh6y57', '9b0e77d58e0646178f80bec200b86a62', '', 'gdfgvc', 1000),
-(18, 'kjhbvh6y57786', '4e4cb590b9889069f8cbab978c46c95e', '', 'gdfgvc', 1000),
-(19, 'kjhbvh6y57786543', '4dc3df6d24574622f0caaa61395958ad', '', 'gdfgvc', 1000),
-(21, '4324tre', 'b7c7b5ea62b655c0ba0e1eb65e57db67', '', '5435red', 1000),
-(22, '4324tref', 'f2025e4738ef738ae82ffb76593fe740', '', '5435red', 1000),
-(23, 'hgfgu7', '7bd113817bd2c06e02dbbc23cfc95a5d', '', '543dfg', 1000),
-(24, 'sabr4', '75bdc05aed1ca396d434c489b8ab5632', '', '543543', 1000),
-(25, '65476', '9d34f5042ec3537ca53e4611d23dd6df', '', '5435465', 1000),
-(26, '65476hg', '47802c1cf1ee07ff5a1fa3aae7ecc0df', '', '5435465', 1000),
-(27, 'ghfythgf', '816b61527ff190572979b32a932b33bc', '', '5435465', 1000),
-(28, 'ghfythgf65', '7c89de1cf50765f76766706eec719754', '', '5435465', 1000),
-(29, 'ghfythgf65h', 'b812a6c123ac1a459ce2192707c452f2', '', 'gdgf', 1000),
-(30, 'ghfythgf65hte', '63eea29eeff5649d08372f988f3a8878', '', 'gdgftre', 1000),
-(31, 'sabr44', 'c91dc62ebbc76328815ae8f57544a7ed', '', '5434', 1000),
-(32, 'hdgdfgdf', 'd119806038534fdffbc45d2d81a2c138', '', 'sabr4', 1000),
-(33, 'gdvfd', '6971461adf5b4bb2a5bcff308685fc1a', '', 'dretdt', 1000),
-(34, 'gdvfdf', '215fe20a69a28f7d45f7356fdfec35b4', '', 'dretdt', 1000),
-(35, '3432fdsfd', '2aeef3166a52a78ab1a47498d35137d4', '', 'gdf54', 1000),
-(36, 'hbvcyhgf', '21ac3817cc28482bfe66d187fc60fd13', '', '42342353', 1000),
-(37, 'nbchvc', 'cf0a54b700a2a22cea905c4ca4cd4984', '', 'bfhdfhg', 1000),
-(38, 'mjgkjghj', 'a1c5b523107eca753d72e41437089a9c', '', 'hfgyut', 1000),
-(39, 'gdfhnbbv', 'd207b7480b59bfb5af44488e136f5c5b', '', 'tregbrty', 1000),
-(40, 'gfdbvfdgcgt', '7f22b858d9f728e72bd8fa9fa8bf2bb3', '', 'tgrbvtr', 1000),
-(41, 'cvhgfh', '677ee9c1129c44976fa4f3bca8a86b7a', '', 'ghfyhdy', 1000),
-(42, 'апвпавпи', '80e43eb2514883dc639078df28fadc77', '', 'екуеук', 1000),
-(43, 'sabr1', '1ba479a58720c3ab34e8dc98830a3dab', '', 'Sabr', 1000),
-(44, 'okokeo', '223a74d4c60fde26adfe387521502b39', '5f4dcc3b5aa765d61d8327deb882cf99', 'Sabrina', 1000),
-(45, 'okokeoefds', 'e0128d95ba438f9e221b7204ea858679', 'cb81b5a0759a829b5e05130330305a00', 'Sabrina', 1000),
-(46, 'hgfhgfygh', '16cb6dc86ac5dfa06c342ccf6ff399cc', 'e2abfa15aa2ec2a75e71314f23755751', '5435', 1000),
-(47, 'hgjfgujgh', '4659b2b6426e6cabd262c29bca9b90b9', '3f3ca68912736358c9f23e068080123c', 'y5456', 1000);
+INSERT INTO `users` (`id`, `login`, `password`, `token`, `nickname`, `money`, `bank`) VALUES
+(1, 'sabr', 'f4a83a74eaba00a84657bcaa38e845c7', '', '432432', 1000, 0),
+(2, '43243', '5fc0605e8bbe46582705224bff1ef4cd', '', '43243', 1000, 0),
+(3, '432342', '68c4852c4068d470f26d714bedd3ecfd', '', '654654', 1000, 0),
+(4, '4324', '91a1fe14a6425c7eb6392950edbd29a1', '', '43243', 1000, 0),
+(5, '54354', '9c473d4b62bfd9ac111b8ce43353e4f2', '', '654654', 1000, 0),
+(6, '43233243', '4176e66c6b297e0cfd02348ebe42fb5d', '', '5435345', 1000, 0),
+(7, '543543', '4ee540092e52f89afa40e2684cc3925f', '', '543543', 1000, 0),
+(8, '5435437', '2e64c70b804b427c7af7f2c51da6905f', '', '543543', 1000, 0),
+(9, '56465', '1faf023fc4778fa55e018e957b3739df', '', '76576', 1000, 0),
+(10, '564650', '1d3d0f285c477abdd43dd6c44c1929b2', '', '76576', 1000, 0),
+(11, 'tret', 'd372be6504b2b0bb98731e25fdc069d7', '', '6546545', 1000, 0),
+(12, '5435435', '4db1feff030dca17313515fbf970899c', '', '534543', 1000, 0),
+(14, '54534', '5555703f48cb0c0a0219bfd63639f32e', '', '43354353', 1000, 0),
+(15, 'tr45tre', 'f422641ed7632667cd719cb6aa80c4f8', '', 'ereter', 1000, 0),
+(16, 'kjhbvh', 'eabc237bb06e797bea9b83dbe5867189', '', 'gdfgvc', 1000, 0),
+(17, 'kjhbvh6y57', '9b0e77d58e0646178f80bec200b86a62', '', 'gdfgvc', 1000, 0),
+(18, 'kjhbvh6y57786', '4e4cb590b9889069f8cbab978c46c95e', '', 'gdfgvc', 1000, 0),
+(19, 'kjhbvh6y57786543', '4dc3df6d24574622f0caaa61395958ad', '', 'gdfgvc', 1000, 0),
+(21, '4324tre', 'b7c7b5ea62b655c0ba0e1eb65e57db67', '', '5435red', 1000, 0),
+(22, '4324tref', 'f2025e4738ef738ae82ffb76593fe740', '', '5435red', 1000, 0),
+(23, 'hgfgu7', '7bd113817bd2c06e02dbbc23cfc95a5d', '', '543dfg', 1000, 0),
+(24, 'sabr4', '75bdc05aed1ca396d434c489b8ab5632', '', '543543', 1000, 0),
+(25, '65476', '9d34f5042ec3537ca53e4611d23dd6df', '', '5435465', 1000, 0),
+(26, '65476hg', '47802c1cf1ee07ff5a1fa3aae7ecc0df', '', '5435465', 1000, 0),
+(27, 'ghfythgf', '816b61527ff190572979b32a932b33bc', '', '5435465', 1000, 0),
+(28, 'ghfythgf65', '7c89de1cf50765f76766706eec719754', '', '5435465', 1000, 0),
+(29, 'ghfythgf65h', 'b812a6c123ac1a459ce2192707c452f2', '', 'gdgf', 1000, 0),
+(30, 'ghfythgf65hte', '63eea29eeff5649d08372f988f3a8878', '', 'gdgftre', 1000, 0),
+(31, 'sabr44', 'c91dc62ebbc76328815ae8f57544a7ed', '', '5434', 1000, 0),
+(32, 'hdgdfgdf', 'd119806038534fdffbc45d2d81a2c138', '', 'sabr4', 1000, 0),
+(33, 'gdvfd', '6971461adf5b4bb2a5bcff308685fc1a', '', 'dretdt', 1000, 0),
+(34, 'gdvfdf', '215fe20a69a28f7d45f7356fdfec35b4', '', 'dretdt', 1000, 0),
+(35, '3432fdsfd', '2aeef3166a52a78ab1a47498d35137d4', '', 'gdf54', 1000, 0),
+(36, 'hbvcyhgf', '21ac3817cc28482bfe66d187fc60fd13', '', '42342353', 1000, 0),
+(37, 'nbchvc', 'cf0a54b700a2a22cea905c4ca4cd4984', '', 'bfhdfhg', 1000, 0),
+(38, 'mjgkjghj', 'a1c5b523107eca753d72e41437089a9c', '', 'hfgyut', 1000, 0),
+(39, 'gdfhnbbv', 'd207b7480b59bfb5af44488e136f5c5b', '', 'tregbrty', 1000, 0),
+(40, 'gfdbvfdgcgt', '7f22b858d9f728e72bd8fa9fa8bf2bb3', '', 'tgrbvtr', 1000, 0),
+(41, 'cvhgfh', '677ee9c1129c44976fa4f3bca8a86b7a', '', 'ghfyhdy', 1000, 0),
+(42, 'апвпавпи', '80e43eb2514883dc639078df28fadc77', '', 'екуеук', 1000, 0),
+(43, 'sabr1', '1ba479a58720c3ab34e8dc98830a3dab', '', 'Sabr', 1000, 0),
+(44, 'okokeo', '223a74d4c60fde26adfe387521502b39', '5f4dcc3b5aa765d61d8327deb882cf99', 'Sabrina', 1000, 0),
+(45, 'okokeoefds', 'e0128d95ba438f9e221b7204ea858679', 'cb81b5a0759a829b5e05130330305a00', 'Sabrina', 1000, 0),
+(46, 'hgfhgfygh', '16cb6dc86ac5dfa06c342ccf6ff399cc', 'e2abfa15aa2ec2a75e71314f23755751', '5435', 1000, 0),
+(47, 'hgjfgujgh', '4659b2b6426e6cabd262c29bca9b90b9', '3f3ca68912736358c9f23e068080123c', 'y5456', 1000, 0),
+(48, 'gfhfdhg', '89d9b4ec49bf9c96a3abb15dd29b5552', '54c158a859c72d50779469b356680939', 'tyrgt', 1000, 0),
+(49, 'fdsfdf', 'fa26d7c0efd0cdc7a1e53a39309b89e5', 'b76ed808e60ca638484fe6e793515a00', 'rewfew', 1000, 0),
+(50, 'sabr12', 'a97f25794060dd5a2390122be3ec1eb8', 'f499d98f73ac57128ea045e443df28fe', 'sabr', 1000, 0),
+(52, 's-a-b-r', 'c9b35bad09a834ccff07a951d1e56bb3', 'aa19504346a17cd6064ae2b6a3952fe6', '12345', 1000, 0),
+(53, 's-a-b-r-12', 'bc6de771e6d415cc0d8036eb877f1d73', '513d0a62b50b5e293c5bb40f4e008aca', '12345', 1200, 99800),
+(54, 'Sabr23', '328102df34731ae45879d0b11e1917e8', '0', 'sabr', 1000, 100000),
+(55, 'Sabr2020', '90a68196450eba2f60b349e1a7fd0b11', '', 'sabr', 1000, 0),
+(56, 'vbdfgfd', '17f73226a2d77615f4b70dcbee3787b6', '', 'gfdvfd', 1000, 0),
+(57, 'vfdgfgfd', '2b6bce76bd90a9dea07b0c932204e6df', '', 'gdf', 1000, 0),
+(58, 'vfdgvfdvfd', '6ba3595563dfa09e327399333c5816c2', '', 'frvreg', 1000, 0),
+(59, 'nflgflghjf', 'ee28f5603b287b695f7985d306f3a2c9', 'ee28f5603b287b695f7985d306f3a2c9949', 'gfdgfd', 1000, 0),
+(60, 'fsdfswdf', '1bd86ff350fdd849da5b18372f16fff5', '', 'rewrew', 1000, 0),
+(61, 'ilya', 'f63ff496503c5252d4da432fc624ff94', 'f63ff496503c5252d4da432fc624ff9439', 'H2O', 1000, 0),
+(62, 'fdsfdsc', 'b3724aa35d7e9f8bd8bba80d8383c931', 'b3724aa35d7e9f8bd8bba80d8383c931550', 'dsfsd', 1000, 0);
 
 --
 -- Индексы сохранённых таблиц
@@ -221,7 +248,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `stats`
 --
 ALTER TABLE `stats`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
 
 --
 -- AUTO_INCREMENT для таблицы `tables`
@@ -233,7 +260,7 @@ ALTER TABLE `tables`
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -52,10 +52,17 @@
             return $this->user->registration($login,$password,$nickname);
         }
 
+        public function transferMoney($params){
+            if($params['money'] && $params['token']){
+                return $this->user->transferMoney($params['token'], $params['money']);
+            }
+            return false;
+        }
+
 
         //GET
 
-        
+
         public function getUserByToken($params){
             return $this->user->getUserByToken($params['token']);
         }

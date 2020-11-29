@@ -16,6 +16,7 @@
                 case 'deletetablebyid': return $app ->deleteTableById($params);//for admin
                 case 'connecttotable': return $app->connectToTable($params);
                 case 'disconnectfromtable': return $app->disconnectFromTable($params);
+                case 'transfermoney': return $app->transferMoney($params);
 
                 //GET
                 case 'getalltables': return $app ->getAllTables();

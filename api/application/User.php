@@ -12,7 +12,7 @@
             $user = $this->db->getUserByLogin($login);
             if($user){
                 if(md5($login.$password.$this->secret) == $user['password']){
-                    $rand = rand (0,1000);
+                    $rand = rand (0,100000);
                     $token = $user['password'].$rand;
                     $this->db->updateToken($user['id'], $token);
                     return $token;
@@ -38,10 +38,22 @@
             return $this->db->registrationUser($login, $password, null, $nickname);
         }
 
+        public function transferMoney($token, $money){
+            $user = $this->db->getUserByToken($token);
+            if($user){
+                if((int)$user['bank'] >= $money){
+                    $activeMoney = $user['money'] + $money;
+                    $bank = (int)$user['bank'] - $money;
+                    return $this->db->transferMoney($user['id'], $activeMoney, $bank);
+                }
+                return false;
+            }
+            return false;
+        }
+
 
 
         //GET
-
 
         public function getUserByToken($token){
             return $this->db->getUserByToken($token);

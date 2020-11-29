@@ -10,6 +10,13 @@ function registration(login,password,nickname){
     });
 }
 
+function transferMoney(token, money){
+    const promise = axios.get('http://localhost/api/index.php?method=transfermoney&token=' + token + '&money=' + money);
+    return promise.then((response) =>{
+        return response.data;
+    });
+}
+
 function login(login,password){
     const promise = axios.get('http://localhost/api/index.php?method=login&login='+login+'&password='+password);
     return promise.then((response) =>{

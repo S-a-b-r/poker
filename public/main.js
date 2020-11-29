@@ -5,7 +5,7 @@
 //}
 //
 //const data = await request();
-token = '513d0a62b50b5e293c5bb40f4e008aca';
+token = 'aa19504346a17cd6064ae2b6a3952fe6';
 
 var registrationButton = document.getElementById('registration');
 var login1 = document.getElementById('login1');
@@ -36,6 +36,14 @@ var idTableForConnect = document.getElementById('idTableForConnect');
 var connectToTableButton = document.getElementById('connectToTable');
 
 var disconnectFromTableButton = document.getElementById('disconnectFromTable');
+
+var money = document.getElementById('money');
+var transferButton = document.getElementById('transferButton');
+
+transferButton.addEventListener('click', ()=>{
+    const promise = transferMoney(token, money.value);
+    promise.then(onDataReceived);
+})
 
 disconnectFromTableButton.addEventListener('click', ()=>{
     const promise = disconnectFromTable(token, idTableForConnect.value);
