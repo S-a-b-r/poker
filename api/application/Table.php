@@ -4,13 +4,8 @@
             $this->db = new DB();
         }
 
-        public function getAllTables(){
-            return $this->db->getAllTables();
-        }
-
-        public function getTableById($id){
-            return $this->db->getTableById($id);
-        }
+        
+        //POST
 
         public function deleteTableById($id){
             return $this->db->deleteTableById($id);
@@ -33,10 +28,22 @@
             return $this->db->disconnectFromTable($userId,$tableId);
         }
 
+
+
+        //GET
+
         public function getQuantPlayersOnTable($id){
             $players = $this->db->getTableById($id)['active_players_id'];
             $players = explode(" ", $players);
             return count($players);
+        }
+
+        public function getAllTables(){
+            return $this->db->getAllTables();
+        }
+
+        public function getTableById($id){
+            return $this->db->getTableById($id);
         }
     }
 ?>

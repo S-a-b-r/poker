@@ -10,7 +10,16 @@
             $this->table = new Table();
             $this->game = new Game();
         }
-        
+
+
+
+        //////////////////////////////////////
+        ///////////////USER///////////////////
+        //////////////////////////////////////
+
+
+        //POST
+
         public function login($params){
             if($params['login'] && $params['password']){
                 return $this->user->login($params['login'],$params['password']);
@@ -43,33 +52,35 @@
             return $this->user->registration($login,$password,$nickname);
         }
 
-        public function getQuantPlayersOnTable($params){
+
+        //GET
+
+        
+        public function getUserByToken($params){
+            return $this->user->getUserByToken($params['token']);
+        }
+
+        public function getUserById($params){
             if($params['id']){
-                return $this->table->getQuantPlayersOnTable($params['id']);
+                return $this->user->getUserById($params['id']);
             }
             return false;
         }
 
-        public function getAllTables(){
-            return $this->table->getAllTables();
-        }
 
-        public function getTableById($params){
-            if($params['id']){
-                return $this->table->getTableById($params['id']);
-            }
-            return false;
-        }
+
+        ////////////////////////////////////////////////
+        ///////////////////TABLE////////////////////////
+        ////////////////////////////////////////////////
+        
+
+        //POST
 
         public function deleteTableById($params){
             if($params['id']){
                 return $this->table->deleteTableById($params['id']);
             }
             return false;
-        }
-
-        public function getUserByToken($params){
-            return $this->user->getUserByToken($params['token']);
         }
 
         public function createTable($params){
@@ -126,6 +137,39 @@
             }
             return false;
         }
+
+
+
+
+        //GET
+
+        public function getQuantPlayersOnTable($params){
+            if($params['id']){
+                return $this->table->getQuantPlayersOnTable($params['id']);
+            }
+            return false;
+        }
+
+        public function getAllTables(){
+            return $this->table->getAllTables();
+        }
+
+        public function getTableById($params){
+            if($params['id']){
+                return $this->table->getTableById($params['id']);
+            }
+            return false;
+        }
+
+
+
+
+
+
+        //////////////////////////////////////////////////////
+        ///////////////////GAME///////////////////////////////
+        //////////////////////////////////////////////////////
+
 
         public function getRandomCard(){
             return $this->game->getRandomCard();

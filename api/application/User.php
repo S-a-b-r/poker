@@ -5,6 +5,9 @@
             $this->secret = "qpalzm10";
         }
 
+
+        //POST
+
         public function login($login, $password){
             $user = $this->db->getUserByLogin($login);
             if($user){
@@ -27,16 +30,25 @@
             return false;
         }
 
-        public function getUserByToken($token){
-            return $this->db->getUserByToken($token);
-        }
-
         public function registration($login,$password,$nickname){
             if($this->db->getUserByLogin($login)){
                 return false;
             }
             $password = md5($login.$password.$this->secret);
             return $this->db->registrationUser($login, $password, null, $nickname);
+        }
+
+
+
+        //GET
+
+
+        public function getUserByToken($token){
+            return $this->db->getUserByToken($token);
+        }
+
+        public function getUserById($id){
+            return $this->db->getuserbyid($id);
         }
     }
 ?>
