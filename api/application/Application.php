@@ -3,6 +3,7 @@
     require_once('User.php');
     require_once('Table.php');
     require_once('Game.php');
+    require_once('Cookie.php');
 
     class Application{
         function __construct(){

@@ -26,17 +26,19 @@
                 case 'getrandomcard': return $app->getRandomCard();//test
                 case 'getquantplayersontable': return $app->getQuantPlayersOnTable($params);
                 case 'getstatsbyid': return $app->getStatsById($params);//написать доки
-
             }
         }
         return false;
     }
 
     function answer($data){
-        if($data){
+        if($data[0]!='error' && $data){
             return array('result'=>'ok', 'data'=>$data);
         }
-        return array('result'=>'error');
+        else if(!$data){
+            return array('result'=>'error');
+        }
+        return array('result'=>'error', 'data'=>'error'.$data[1]);
     }
 
     if($_GET){
