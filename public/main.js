@@ -11,17 +11,6 @@ var registrationButton = document.getElementById('registration');
 var login1 = document.getElementById('login1');
 var password1 = document.getElementById('password1');
 var nickname1 = document.getElementById('nickname1');
-var avatar = document.getElementById('avatar');
-upload_field.onchange = function() { 
-    // получаем элемент <IMG />, предназначенный для превью 
-    var preview_image = document.getElementById("preview_image"); 
-    // присваиваем ему источник изображения
-   if("files" in upload_field && "getAsDataURL" in upload_field.files[0]) { 
-      preview_image.src = upload_field.files[0].getAsDataURL(); 
-   } else { 
-      alert("К сожалению, Ваш браузер не поддерживает метод 'getAsDataURL'"); 
-   } 
-} 
 
 var loginButton = document.getElementById('logining');
 var login2 = document.getElementById('login2');
@@ -68,7 +57,7 @@ connectToTableButton.addEventListener('click',()=>{
 
 
 registrationButton.addEventListener('click',()=>{
-    const promise = registration(login1.value,password1.value,nickname1.value,avatar);
+    const promise = registration(login1.value,password1.value,nickname1.value);
     promise.then(onDataReceived);
 });
 
