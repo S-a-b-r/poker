@@ -53,13 +53,19 @@
             return $this->user->registration($login,$password,$nickname);
         }
 
-        public function transferMoney($params){
+        public function transferToMoney($params){
             if($params['money'] && $params['token']){
-                return $this->user->transferMoney($params['token'], $params['money']);
+                return $this->user->transferToMoney($params['token'], $params['money']);
             }
             return false;
         }
 
+        public function transferToBank($params){
+            if($params['money'] && $params['token']){
+                return $this->user->transferToBank($params['token'], $params['money']);
+            }
+            return false;
+        }
 
         //GET
 

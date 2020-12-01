@@ -41,12 +41,25 @@
             return $this->db->registrationUser($login, $password, null, $nickname);
         }
 
-        public function transferMoney($token, $money){
+        public function transferToMoney($token, $money){
             $user = $this->db->getUserByToken($token);
             if($user){
                 if((int)$user['bank'] >= $money){
                     $activeMoney = $user['money'] + $money;
                     $bank = (int)$user['bank'] - $money;
+                    return $this->db->transferMoney($user['id'], $activeMoney, $bank);
+                }
+                return false;
+            }
+            return false;
+        }
+
+        public function transferToBank($token, $money){
+            $user = $this->db->getUserByToken($token);
+            if($user){
+                if((int)$user['money'] >= $money){
+                    $activeMoney = $user['money'] - $money;
+                    $bank = (int)$user['bank'] + $money;
                     return $this->db->transferMoney($user['id'], $activeMoney, $bank);
                 }
                 return false;
