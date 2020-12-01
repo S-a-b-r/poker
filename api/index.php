@@ -17,7 +17,8 @@
                 case 'deletetablebyid': return $app ->deleteTableById($params);//for admin
                 case 'connecttotable': return $app->connectToTable($params);
                 case 'disconnectfromtable': return $app->disconnectFromTable($params);
-                case 'transfermoney': return $app->transferMoney($params);//написать доки
+                case 'transfertomoney': return $app->transferToMoney($params);
+                case 'transfertobank': return $app->transferToBank($params);
 
                 //GET
                 case 'getalltables': return $app ->getAllTables();
@@ -26,7 +27,7 @@
                 case 'gettablebyid': return $app ->getTableById($params);
                 case 'getrandomcard': return $app->getRandomCard();//test
                 case 'getquantplayersontable': return $app->getQuantPlayersOnTable($params);
-                case 'getstatsbyid': return $app->getStatsById($params);//написать доки
+                case 'getstatsbyid': return $app->getStatsById($params);
             }
         }
         return false;

@@ -38,10 +38,18 @@ var connectToTableButton = document.getElementById('connectToTable');
 var disconnectFromTableButton = document.getElementById('disconnectFromTable');
 
 var money = document.getElementById('money');
-var transferButton = document.getElementById('transferButton');
+var transferToMoneyButton = document.getElementById('transferToMoneyButton');
 
-transferButton.addEventListener('click', ()=>{
-    const promise = transferMoney(token, money.value);
+var moneyToBank = document.getElementById('moneyToBank');
+var transferToBankButton = document.getElementById('transferToBankButton');
+
+transferToBankButton.addEventListener('click',()=>{
+    const promise = transferToBank(token,moneyToBank.value);
+    promise.then(onDataReceived);
+})
+
+transferToMoneyButton.addEventListener('click', ()=>{
+    const promise = transferToMoney(token, money.value);
     promise.then(onDataReceived);
 })
 
