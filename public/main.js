@@ -5,13 +5,12 @@
 //}
 //
 //const data = await request();
-token = '1ba479a58720c3ab34e8dc98830a3dab62037';
+token = 'b76ed808e60ca638484fe6e793515a00';
 
 var registrationButton = document.getElementById('registration');
 var login1 = document.getElementById('login1');
 var password1 = document.getElementById('password1');
 var nickname1 = document.getElementById('nickname1');
-
 
 var loginButton = document.getElementById('logining');
 var login2 = document.getElementById('login2');
