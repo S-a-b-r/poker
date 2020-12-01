@@ -25,29 +25,30 @@
             if($params['login'] && $params['password']){
                 return $this->user->login($params['login'],$params['password']);
             }
-            return false;
+            return ['error', '5']; // Не введен логин или пароль
         }
 
         public function logout($params){
             if($params['token']){
                 return $this->user->logout($params['token']);
             }
-            return false;
+            return ['error', '6']; // Не произведен вход в аккаунт
         }
 
+        //
         public function registration($params){
             $login =  $params['login'];
             $password = $params['password'];
             $nickname = $params['nickname'];
 
             if(strlen($login) < 3 || strlen($login) > 30 ){
-                return false;
+                return ['error', '2']; // Логин неверной длины
             }
             elseif(strlen($password) < 5) {
-                return false;
+                return ['error', '3']; // Пароль слишком короткий
             }
             elseif(strlen($nickname) < 3){
-                return false;
+                return ['error', '4']; // Никнейм слишком короткий
             }
             
             return $this->user->registration($login,$password,$nickname);
@@ -57,7 +58,7 @@
             if($params['money'] && $params['token']){
                 return $this->user->transferMoney($params['token'], $params['money']);
             }
-            return false;
+            return ['error', '7']; // Недостаточно средств на счету
         }
 
 
@@ -72,14 +73,14 @@
             if($params['id']){
                 return $this->user->getUserById($params['id']);
             }
-            return false;
+            return ['error', '8']; // Не введен id
         }
 
         public function getStatsById($params){
             if($params['id']){
                 return $this->user->getStatsById($params['id']);
             }
-            return false;
+            return ['error', '8']; // Не введен id
         }
 
 
@@ -95,7 +96,7 @@
             if($params['id']){
                 return $this->table->deleteTableById($params['id']);
             }
-            return false;
+            return ['error', '8']; // Не введен id
         }
 
         public function createTable($params){

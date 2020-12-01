@@ -32,7 +32,7 @@
             }
             return false;
         }
-
+//
         public function registration($login,$password,$nickname){
             if($this->db->getUserByLogin($login)){
                 return ['error','1'];//Пользователь с таким логином существует
