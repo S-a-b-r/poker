@@ -114,7 +114,7 @@ class DB {
             $stmt->execute();
             return true;
         }
-        return false;
+        return ['error', '13']; //Игроков за столом нет
     }
 
     public function disconnectFromTable($userId, $tableId){
@@ -131,7 +131,7 @@ class DB {
             $stmt->execute();
             return true;
         }
-        return false;
+        return ['error', '13']; //Игроков за столом нет
     }
 
 

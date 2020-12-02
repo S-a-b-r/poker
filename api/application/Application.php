@@ -125,7 +125,7 @@
             if($name && $token){
                 return $this->table->createTable($token, $name, $quant, $rates, $password);
             }
-            return false;
+            return ['error', '9']; //Нет имени стола
         }
 
         public function connectToTable($params){
@@ -139,11 +139,11 @@
                     if($quant < $tables['quantity_players']){
                         return $this->table->connectToTable($user['id'], $tableId);//прописать
                     }
-                    return false;
+                    return ['error', '12']; //Кол-во игроков меньше необходимого
                 }
-                return false;
+                return ['error', '11']; //Такой стол не существует
             }
-            return false;
+            return ['error', '6']; //Не произведен вход в аккаунт
         }
 
         public function disconnectFromTable($params){
@@ -151,7 +151,7 @@
             if($user && $params['id']){
                 return $this->table->disconnectFromTable($user['id'], $params['id']);
             }
-            return false;
+            return ['error', '8']; //Не введен id 
         }
 
 
@@ -163,7 +163,7 @@
             if($params['id']){
                 return $this->table->getQuantPlayersOnTable($params['id']);
             }
-            return false;
+            return ['error', '8']; //Не введен id 
         }
 
         public function getAllTables(){
@@ -174,7 +174,7 @@
             if($params['id']){
                 return $this->table->getTableById($params['id']);
             }
-            return false;
+            return ['error', '8']; //Не введен id 
         }
 
 
