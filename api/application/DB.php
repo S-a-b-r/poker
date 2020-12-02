@@ -1,10 +1,10 @@
 <?php
 class DB {
     function __construct() {
-        $host = "poker";
+        $host = "localhost";
         $user = "root";
         $pass = "root";
-        $name = "test_1_db";
+        $name = "poker";
         try {
             $this->db = new PDO('mysql:host='.$host.';dbname='.$name, $user, $pass);
         } catch (PDOException $e) {
