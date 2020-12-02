@@ -43,6 +43,13 @@ var transferToMoneyButton = document.getElementById('transferToMoneyButton');
 var moneyToBank = document.getElementById('moneyToBank');
 var transferToBankButton = document.getElementById('transferToBankButton');
 
+var checkCombinationButton = document.getElementById('checkCombination');
+
+checkCombinationButton.addEventListener('click',()=>{
+    const promise = checkCombination();
+    promise.then(onDataReceived);
+})
+
 transferToBankButton.addEventListener('click',()=>{
     const promise = transferToBank(token,moneyToBank.value);
     promise.then(onDataReceived);

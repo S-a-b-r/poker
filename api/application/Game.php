@@ -58,11 +58,26 @@
             ['v'=>12,'s'=>'S'],
             ['v'=>13,'s'=>'S'],
             ['v'=>14,'s'=>'S'],
-        );// v(values) = H,D,C,S; s(suit) = 2,3,4,5,6,7,8,9,10,11-J,12-Q,13-K,14-A;
+        );// s(suit) = H,D,C,S; v(values) = 2,3,4,5,6,7,8,9,10,11-J,12-Q,13-K,14-A;
 
-        public function getRandomCard(){
-            $i = rand (0,51);
-            return $this->card[$i];
+        public function getRandomCard($n){//n - кол-во карт, которые нужно раздать;
+            $allCards = $this->card;
+            $m = 51;
+            $gameCard = [];
+            while($m > 51-$n){
+                $i = rand (0, $m);
+                $m--;
+                $gameCard[] = $allCards[$i];
+                array_slice($allCards, $i);
+            }
+            return $gameCard;
+        }
+
+        public function checkCombination($gameCard){
+            //$values = [];
+            //$suit = [];
+            //$sorted = array_orderby($gameCard, 'v', SORT_ASC);
+            return $gameCard;
         }
 
         

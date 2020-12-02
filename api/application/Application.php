@@ -191,9 +191,18 @@
         ///////////////////GAME///////////////////////////////
         //////////////////////////////////////////////////////
 
+        public function checkCombination($params){
+            if($params['cards']){
+                return $this->game->checkCombination($params['cards']);
+            }
+            return false;
+        }
 
-        public function getRandomCard(){
-            return $this->game->getRandomCard();
+        public function getRandomCard($params){
+            if($params['n']){
+                return $this->game->getRandomCard($params['n']);
+            }
+            return $this->game->getRandomCard(5);
         }
     }
 ?>
