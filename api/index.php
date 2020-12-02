@@ -19,13 +19,14 @@
                 case 'disconnectfromtable': return $app->disconnectFromTable($params);
                 case 'transfertomoney': return $app->transferToMoney($params);
                 case 'transfertobank': return $app->transferToBank($params);
+                case 'checkcombination': return $app->checkCombination($params);//Написать доки
 
                 //GET
                 case 'getalltables': return $app ->getAllTables();
                 case 'getuserbytoken': return $app ->getUserByToken($params);//for admin
                 case 'getuserbyid': return $app->getUserById($params);
                 case 'gettablebyid': return $app ->getTableById($params);
-                case 'getrandomcard': return $app->getRandomCard();//test
+                case 'getrandomcard': return $app->getRandomCard($params);//обновить доки!
                 case 'getquantplayersontable': return $app->getQuantPlayersOnTable($params);
                 case 'getstatsbyid': return $app->getStatsById($params);
             }
