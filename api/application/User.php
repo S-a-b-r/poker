@@ -20,7 +20,7 @@
                     return $token;
                 }
             }
-            return false;
+            return ['error', '10']; // введен не верный логин(игрока с таким логином не существует)
         }
 
         public function logout($token){
@@ -30,7 +30,7 @@
                 $this->cookie->deleteTokenInCookie();
                 return true;
             }
-            return false;
+            return ['error','6']; //Не произведен вход в аккаунт
         }
 //
         public function registration($login,$password,$nickname){
@@ -49,9 +49,9 @@
                     $bank = (int)$user['bank'] - $money;
                     return $this->db->transferMoney($user['id'], $activeMoney, $bank);
                 }
-                return false;
+                return ['error', '7']; //  Недостаточно средств на счету
             }
-            return false;
+            return ['error','6']; //Не произведен вход в аккаунт
         }
 
         public function transferToBank($token, $money){
@@ -84,7 +84,7 @@
             if($user){
                 return $this->db->getStatsById($id);
             }
-            return false;
+            return ['error','6']; //Не произведен вход в аккаунт
         }
     }
 ?>
