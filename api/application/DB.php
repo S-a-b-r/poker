@@ -1,7 +1,7 @@
 <?php
 class DB {
     function __construct() {
-        $host = "localhost";
+        $host = "poker";
         $user = "root";
         $pass = "root";
         $name = "poker";
@@ -28,7 +28,7 @@ class DB {
     public function updateToken($id, $token) {
         $stmt = $this->db->prepare("UPDATE users SET token='$token' WHERE id='$id'");
         $stmt->execute();
-        return true;
+        return ['ok', 'true'];
     }
 
     public function registrationUser($login, $password, $token, $nickname){
@@ -37,13 +37,13 @@ class DB {
         $stmt->fetch();
         $stmt2 = $this->db->prepare("INSERT INTO `stats` ( `win`, `loss`, `biggest_win`, `biggest_loss`) VALUES (0,0,0,0)");
         $stmt2->execute();
-        return true;
+        return ['ok', 'true'];
     }
 
     public function transferMoney($id, $activeMoney, $bank){
         $stmt = $this->db->prepare("UPDATE `users` SET `money`=$activeMoney,`bank`=$bank WHERE `id` = $id");
         $stmt->execute();
-        return true;
+        return ['ok', 'true'];
     }
 
     //GET
@@ -91,7 +91,7 @@ class DB {
     public function deleteTableById($id){
         $stmt = $this->db->prepare("DELETE FROM `tables` WHERE id='$id'");
         $stmt->execute();
-        return true;
+        return ['ok', 'true'];
     }
 
     public function createTable($name, $quant, $rates, $password, $userId){
@@ -103,7 +103,7 @@ class DB {
             $stmt = $this->db->prepare("INSERT INTO `tables`(`name`, `quantity_players`, `active_players_id`, `rates`) VALUES ('$name','$quant','$userId','$rates')");
             $stmt->execute();
         }
-        return true;
+        return ['ok', 'true'];
     }
 
     public function connectToTable($userId, $tableId){
@@ -112,7 +112,7 @@ class DB {
             $players = $players." $userId";
             $stmt = $this->db->prepare("UPDATE `tables` SET `active_players_id`='$players' WHERE id='$tableId'");
             $stmt->execute();
-            return true;
+            return ['ok', 'true'];
         }
         return false;
     }
@@ -129,7 +129,7 @@ class DB {
             $players = implode(" ", $players);
             $stmt = $this->db->prepare("UPDATE `tables` SET `active_players_id`='$players' WHERE id='$tableId'");
             $stmt->execute();
-            return true;
+            return ['ok', 'true'];
         }
         return false;
     }

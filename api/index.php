@@ -35,8 +35,8 @@
     }
 
     function answer($data){
-        if($data[0]!='error' && $data){
-            return array('result'=>'ok', 'data'=>$data);
+        if($data[0]!='error'){
+            return array('result'=>'ok', 'data'=>$data[1]);
         }
         else if(!$data){
             return array('result'=>'error');

@@ -131,7 +131,7 @@
             if($name && $token){
                 return $this->table->createTable($token, $name, $quant, $rates, $password);
             }
-            return false;
+            return ['error', '14'];
         }
 
         public function connectToTable($params){
