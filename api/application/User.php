@@ -62,9 +62,9 @@
                     $bank = (int)$user['bank'] + $money;
                     return $this->db->transferMoney($user['id'], $activeMoney, $bank);
                 }
-                return false;
+                return ['error', '7']; //  Недостаточно средств на счету
             }
-            return false;
+            return ['error','6']; //Пользователь с таким токеном не найден
         }
 
 

@@ -65,7 +65,7 @@
             if($params['money'] && $params['token']){
                 return $this->user->transferToBank($params['token'], $params['money']);
             }
-            return false;
+            return ['error', '7']; // Недостаточно средств на счету
         }
 
         //GET
@@ -145,11 +145,11 @@
                     if($quant < $tables['quantity_players']){
                         return $this->table->connectToTable($user['id'], $tableId);//прописать
                     }
-                    return ['error', '12']; //Кол-во игроков меньше необходимого
+                    return ['error', '12']; //Кол-во игроков за столом максимально
                 }
                 return ['error', '11']; //Такой стол не существует
             }
-            return ['error', '6']; //Не произведен вход в аккаунт
+            return ['error', '6']; //Не произведен вход в аккаунт || пользователь с таким токеном не найден
         }
 
         public function disconnectFromTable($params){
@@ -192,12 +192,12 @@
         ///////////////////GAME///////////////////////////////
         //////////////////////////////////////////////////////
 
-        public function checkCombination($params){
-            if($params['cards']){
-                return $this->game->checkCombination($params['cards']);
-            }
-            return false;
-        }
+        //public function checkCombination($params){
+        //    if($params['cards']){
+        //        return $this->game->checkCombination($params['cards']);
+        //    }
+        //    return false;
+        //}
 
         public function getRandomCard($params){
             if($params['n']){

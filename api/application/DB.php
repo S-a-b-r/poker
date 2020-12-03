@@ -51,28 +51,21 @@ class DB {
     public function getUserByLogin($login) {
         $stmt = $this->db->prepare("SELECT * FROM `users` WHERE login='$login'");
         $stmt->execute();
-        if($stmt){
-            return $stmt->fetch(PDO::FETCH_ASSOC);
-        }
-        return null;
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+
     }
     
     public function getUserByToken($token){
         $stmt = $this->db->prepare("SELECT * FROM `users` WHERE token='$token'");
         $stmt->execute();
-        if($stmt){
-            return $stmt->fetch(PDO::FETCH_ASSOC);
-        }
-        return null;
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function getUserById($id){
         $stmt = $this->db->prepare("SELECT * FROM `users` WHERE id='$id'");
         $stmt->execute();
-        if($stmt){
-            return $stmt->fetch(PDO::FETCH_ASSOC);
-        }
-        return null;
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+
     }
 
     public function getStatsById($id){
@@ -114,7 +107,7 @@ class DB {
             $stmt->execute();
             return ['ok', 'true'];
         }
-        return ['error', '13']; //Игроков за столом нет
+        return ['error', '11']; //Игроков за столом нет
     }
 
     public function disconnectFromTable($userId, $tableId){
@@ -131,7 +124,7 @@ class DB {
             $stmt->execute();
             return ['ok', 'true'];
         }
-        return ['error', '13']; //Игроков за столом нет
+        return ['error', '11']; //Игроков за столом нет
     }
 
 
