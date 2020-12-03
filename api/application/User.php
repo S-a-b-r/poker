@@ -14,25 +14,26 @@
             if($user){
                 if(md5($login.$password.$this->secret) == $user['password']){
                     $rand = rand (0,100000);
-                    $token = $user['password'].$rand;
+                    $token = md5($user['password'].$rand);
                     $this->db->updateToken($user['id'], $token);
                     $this->cookie->updateTokenInCookie($token);
-                    return $token;
+                    return ['true', $token];
                 }
+                return ['error', '13']; //Введен неверный пароль
             }
-            return false;
+            return ['error', '10']; // введен не верный логин(игрока с таким логином не существует)
         }
 
         public function logout($token){
             $user = $this->db->getUserByToken($token);
             if($user){
-                $this->db->updateToken($user['id'],null);
+                $this->db->updateToken($user['id'], null);
                 $this->cookie->deleteTokenInCookie();
                 return true;
             }
-            return false;
+            return ['error','6']; //Не произведен вход в аккаунт
         }
-
+//
         public function registration($login,$password,$nickname){
             if($this->db->getUserByLogin($login)){
                 return ['error','1'];//Пользователь с таким логином существует
@@ -49,9 +50,9 @@
                     $bank = (int)$user['bank'] - $money;
                     return $this->db->transferMoney($user['id'], $activeMoney, $bank);
                 }
-                return false;
+                return ['error', '7']; //  Недостаточно средств на счету
             }
-            return false;
+            return ['error','6']; //Не произведен вход в аккаунт
         }
 
         public function transferToBank($token, $money){
@@ -62,9 +63,9 @@
                     $bank = (int)$user['bank'] + $money;
                     return $this->db->transferMoney($user['id'], $activeMoney, $bank);
                 }
-                return false;
+                return ['error', '7']; //  Недостаточно средств на счету
             }
-            return false;
+            return ['error','6']; //Пользователь с таким токеном не найден
         }
 
 
@@ -84,7 +85,7 @@
             if($user){
                 return $this->db->getStatsById($id);
             }
-            return false;
+            return ['error','6']; //Не произведен вход в аккаунт
         }
     }
 ?>

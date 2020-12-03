@@ -25,29 +25,30 @@
             if($params['login'] && $params['password']){
                 return $this->user->login($params['login'],$params['password']);
             }
-            return false;
+            return ['error', '5']; // Не введен логин или пароль
         }
 
         public function logout($params){
             if($params['token']){
                 return $this->user->logout($params['token']);
             }
-            return false;
+            return ['error', '6']; // Не произведен вход в аккаунт
         }
 
+        //
         public function registration($params){
             $login =  $params['login'];
             $password = $params['password'];
             $nickname = $params['nickname'];
 
             if(strlen($login) < 3 || strlen($login) > 30 ){
-                return false;
+                return ['error', '2']; // Логин неверной длины
             }
             elseif(strlen($password) < 5) {
-                return false;
+                return ['error', '3']; // Пароль слишком короткий
             }
             elseif(strlen($nickname) < 3){
-                return false;
+                return ['error', '4']; // Никнейм слишком короткий
             }
             
             return $this->user->registration($login,$password,$nickname);
@@ -57,14 +58,14 @@
             if($params['money'] && $params['token']){
                 return $this->user->transferToMoney($params['token'], $params['money']);
             }
-            return false;
+            return ['error', '7']; // Недостаточно средств на счету
         }
 
         public function transferToBank($params){
             if($params['money'] && $params['token']){
                 return $this->user->transferToBank($params['token'], $params['money']);
             }
-            return false;
+            return ['error', '7']; // Недостаточно средств на счету
         }
 
         //GET
@@ -78,14 +79,14 @@
             if($params['id']){
                 return $this->user->getUserById($params['id']);
             }
-            return false;
+            return ['error', '8']; // Не введен id
         }
 
         public function getStatsById($params){
             if($params['id']){
                 return $this->user->getStatsById($params['id']);
             }
-            return false;
+            return ['error', '8']; // Не введен id
         }
 
 
@@ -101,36 +102,47 @@
             if($params['id']){
                 return $this->table->deleteTableById($params['id']);
             }
-            return false;
+            return ['error', '8']; // Не введен id
         }
 
         public function createTable($params){
             $name = $params['name'];
             $token = $params['token'];
-            $quant = (int)$params['quantplayers'];
-            $rates = (int)$params['rates'];
-            $password = $params['password'];
+
+            if($params['quantplayers']){
+                $quant = (int)$params['quantplayers'];
+            }
+            else $quant = 7;
+
+            if($params['rates']){
+                $rates = (int)$params['rates'];
+            }
+            else $rates = 20;
+            if($params['password']){
+                $password = $params['password'];
+            }
+            else $password = null;
 
             //Обрабатываем исключения для кол-ва игроков
             if($quant >= 7){
                 $quant = 7;
             }
-            elseif($quant <= 4 || !$quant){
+            elseif($quant <= 4){
                 $quant = 4;
             }
 
             //Обрабатываем исключения для ставок
             if($rates >= 10000){
-                $quant = 10000;
+                $rates = 10000;
             }
-            elseif($rates <= 20 || !$rates){
+            elseif($rates <= 20){
                 $rates = 20;
             }
 
             if($name && $token){
                 return $this->table->createTable($token, $name, $quant, $rates, $password);
             }
-            return false;
+            return ['error', '9']; //Нет имени стола
         }
 
         public function connectToTable($params){
@@ -144,11 +156,11 @@
                     if($quant < $tables['quantity_players']){
                         return $this->table->connectToTable($user['id'], $tableId);//прописать
                     }
-                    return false;
+                    return ['error', '12']; //Кол-во игроков за столом максимально
                 }
-                return false;
+                return ['error', '11']; //Такой стол не существует
             }
-            return false;
+            return ['error', '6']; //Не произведен вход в аккаунт || пользователь с таким токеном не найден
         }
 
         public function disconnectFromTable($params){
@@ -156,7 +168,7 @@
             if($user && $params['id']){
                 return $this->table->disconnectFromTable($user['id'], $params['id']);
             }
-            return false;
+            return ['error', '8']; //Не введен id 
         }
 
 
@@ -168,7 +180,7 @@
             if($params['id']){
                 return $this->table->getQuantPlayersOnTable($params['id']);
             }
-            return false;
+            return ['error', '8']; //Не введен id 
         }
 
         public function getAllTables(){
@@ -179,7 +191,7 @@
             if($params['id']){
                 return $this->table->getTableById($params['id']);
             }
-            return false;
+            return ['error', '8']; //Не введен id 
         }
 
 
@@ -191,12 +203,12 @@
         ///////////////////GAME///////////////////////////////
         //////////////////////////////////////////////////////
 
-        public function checkCombination($params){
-            if($params['cards']){
-                return $this->game->checkCombination($params['cards']);
-            }
-            return false;
-        }
+        //public function checkCombination($params){
+        //    if($params['cards']){
+        //        return $this->game->checkCombination($params['cards']);
+        //    }
+        //    return false;
+        //}
 
         public function getRandomCard($params){
             if($params['n']){

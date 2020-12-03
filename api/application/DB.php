@@ -4,7 +4,7 @@ class DB {
         $host = "poker";
         $user = "root";
         $pass = "root";
-        $name = "test_1_db";
+        $name = "poker";
         try {
             $this->db = new PDO('mysql:host='.$host.';dbname='.$name, $user, $pass);
         } catch (PDOException $e) {
@@ -28,7 +28,7 @@ class DB {
     public function updateToken($id, $token) {
         $stmt = $this->db->prepare("UPDATE users SET token='$token' WHERE id='$id'");
         $stmt->execute();
-        return true;
+        return ['ok', 'true'];
     }
 
     public function registrationUser($login, $password, $token, $nickname){
@@ -37,13 +37,13 @@ class DB {
         $stmt->fetch();
         $stmt2 = $this->db->prepare("INSERT INTO `stats` ( `win`, `loss`, `biggest_win`, `biggest_loss`) VALUES (0,0,0,0)");
         $stmt2->execute();
-        return true;
+        return ['ok', 'true'];
     }
 
     public function transferMoney($id, $activeMoney, $bank){
         $stmt = $this->db->prepare("UPDATE `users` SET `money`=$activeMoney,`bank`=$bank WHERE `id` = $id");
         $stmt->execute();
-        return true;
+        return ['ok', 'true'];
     }
 
     //GET
@@ -51,28 +51,21 @@ class DB {
     public function getUserByLogin($login) {
         $stmt = $this->db->prepare("SELECT * FROM `users` WHERE login='$login'");
         $stmt->execute();
-        if($stmt){
-            return $stmt->fetch(PDO::FETCH_ASSOC);
-        }
-        return null;
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+
     }
     
     public function getUserByToken($token){
         $stmt = $this->db->prepare("SELECT * FROM `users` WHERE token='$token'");
         $stmt->execute();
-        if($stmt){
-            return $stmt->fetch(PDO::FETCH_ASSOC);
-        }
-        return null;
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function getUserById($id){
         $stmt = $this->db->prepare("SELECT * FROM `users` WHERE id='$id'");
         $stmt->execute();
-        if($stmt){
-            return $stmt->fetch(PDO::FETCH_ASSOC);
-        }
-        return null;
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+
     }
 
     public function getStatsById($id){
@@ -91,7 +84,7 @@ class DB {
     public function deleteTableById($id){
         $stmt = $this->db->prepare("DELETE FROM `tables` WHERE id='$id'");
         $stmt->execute();
-        return true;
+        return ['ok', 'true'];
     }
 
     public function createTable($name, $quant, $rates, $password, $userId){
@@ -103,7 +96,7 @@ class DB {
             $stmt = $this->db->prepare("INSERT INTO `tables`(`name`, `quantity_players`, `active_players_id`, `rates`) VALUES ('$name','$quant','$userId','$rates')");
             $stmt->execute();
         }
-        return true;
+        return ['ok', 'true'];
     }
 
     public function connectToTable($userId, $tableId){
@@ -112,9 +105,9 @@ class DB {
             $players = $players." $userId";
             $stmt = $this->db->prepare("UPDATE `tables` SET `active_players_id`='$players' WHERE id='$tableId'");
             $stmt->execute();
-            return true;
+            return ['ok', 'true'];
         }
-        return false;
+        return ['error', '11']; //Игроков за столом нет
     }
 
     public function disconnectFromTable($userId, $tableId){
@@ -129,9 +122,9 @@ class DB {
             $players = implode(" ", $players);
             $stmt = $this->db->prepare("UPDATE `tables` SET `active_players_id`='$players' WHERE id='$tableId'");
             $stmt->execute();
-            return true;
+            return ['ok', 'true'];
         }
-        return false;
+        return ['error', '11']; //Игроков за столом нет
     }
 
 
