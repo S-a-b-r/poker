@@ -108,23 +108,34 @@
         public function createTable($params){
             $name = $params['name'];
             $token = $params['token'];
-            $quant = (int)$params['quantplayers'];
-            $rates = (int)$params['rates'];
-            $password = $params['password'];
+
+            if($params['quantplayers']){
+                $quant = (int)$params['quantplayers'];
+            }
+            else $quant = 7;
+
+            if($params['rates']){
+                $rates = (int)$params['rates'];
+            }
+            else $rates = 20;
+            if($params['password']){
+                $password = $params['password'];
+            }
+            else $password = null;
 
             //Обрабатываем исключения для кол-ва игроков
             if($quant >= 7){
                 $quant = 7;
             }
-            elseif($quant <= 4 || !$quant){
+            elseif($quant <= 4){
                 $quant = 4;
             }
 
             //Обрабатываем исключения для ставок
             if($rates >= 10000){
-                $quant = 10000;
+                $rates = 10000;
             }
-            elseif($rates <= 20 || !$rates){
+            elseif($rates <= 20){
                 $rates = 20;
             }
 

@@ -14,11 +14,12 @@
             if($user){
                 if(md5($login.$password.$this->secret) == $user['password']){
                     $rand = rand (0,100000);
-                    $token = $user['password'].$rand;
+                    $token = md5($user['password'].$rand);
                     $this->db->updateToken($user['id'], $token);
                     $this->cookie->updateTokenInCookie($token);
-                    return $token;
+                    return ['true', $token];
                 }
+                return ['error', '13']; //Введен неверный пароль
             }
             return ['error', '10']; // введен не верный логин(игрока с таким логином не существует)
         }
@@ -26,7 +27,7 @@
         public function logout($token){
             $user = $this->db->getUserByToken($token);
             if($user){
-                $this->db->updateToken($user['id'],null);
+                $this->db->updateToken($user['id'], null);
                 $this->cookie->deleteTokenInCookie();
                 return true;
             }
