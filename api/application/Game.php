@@ -80,9 +80,5 @@
             return $gameCard;
         }
 
-        
-
-
-
     }
 ?>
