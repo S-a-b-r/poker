@@ -19,7 +19,8 @@
                 case 'disconnectfromtable': return $app->disconnectFromTable($params);
                 case 'transfertomoney': return $app->transferToMoney($params);
                 case 'transfertobank': return $app->transferToBank($params);
-                case 'checkcombination': return $app->checkCombination($params);//Написать доки
+                case 'checkcombination': return $app->checkCombination();//Написать доки
+                case 'winner': return $app->winner($params);
 
                 //GET
                 case 'getalltables': return $app ->getAllTables();

@@ -68,12 +68,36 @@ class DB {
 
     }
 
+
+
+
+    ////////////////////////////////////////////////
+    ///////////////////STATS////////////////////////
+    ////////////////////////////////////////////////
+
+
+
+    //POST
+
+    public function updBiggestWin($id, $money){
+        $stmt = $this->db->prepare("UPDATE `stats` SET `biggest_win`='$money' WHERE `user_id`='$id'");
+        $stmt->execute();
+        return ['ok','true'];
+    }
+
+    public function updWinStats($id, $money){
+        $stmt = $this->db->prepare("UPDATE `stats` SET `win`='$money' WHERE `user_id`='$id'");
+        $stmt->execute();
+        return ['ok','true'];
+    }
+
+    //GET
+
     public function getStatsById($id){
         $stmt = $this->db->prepare("SELECT * FROM `stats` WHERE user_id='$id'");
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
-
 
     ////////////////////////////////////////////////
     ///////////////////TABLE////////////////////////

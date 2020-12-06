@@ -14,15 +14,15 @@ function registration(login,password,nickname){
 function checkCombination(){
     const params = new URLSearchParams();
     params.append('method','checkcombination');
-    params.append('cards',[
-        [{'v':  2, 's': 'H'}],
-        [{'v':  4, 's': 'H'}],
-        [{'v':  6, 's': 'D'}],
-        [{'v': 13, 's': 'C'}],
-        [{'v': 12, 's': 'C'}],
-        [{'v': 10, 's': 'S'}],
-        [{'v':  4, 's': 'D'}]
-    ])
+    //params.append('cards',[
+    //    [{'v':  2, 's': 'H'}],
+    //    [{'v':  4, 's': 'H'}],
+    //    [{'v':  6, 's': 'D'}],
+    //    [{'v': 13, 's': 'C'}],
+    //    [{'v': 12, 's': 'C'}],
+    //    [{'v': 10, 's': 'S'}],
+    //    [{'v':  4, 's': 'D'}]
+    //])
     const promise = axios.post('http://localhost/api/index.php', params);
     return promise.then((response) =>{
         return response.data;

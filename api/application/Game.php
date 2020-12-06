@@ -73,12 +73,27 @@
             return $gameCard;
         }
 
-        public function checkCombination($gameCard){
-            //$values = [];
-            //$suit = [];
-            //$sorted = array_orderby($gameCard, 'v', SORT_ASC);
-            return $gameCard;
+        public function checkCombination(){
+            $gameCards = $this->getRandomCard(7);
+            $volume  = array_column($gameCards, 'v');
+            array_multisort($volume, SORT_DESC, $gameCards);
+            if($gameCard[0]['v']==14)
+            return ['ok',$gameCards];
         }
 
+        public function winner($id,$money){
+            $user = $this->db->getUserById($id);
+            $stats = $this->db->getStatsById($id);
+            if($user && $stats){
+                $activeMoney = $user['money'] + $money;
+                $allMoney = $stats['win'] + $money;
+                if($stats['biggest_win']<$money){
+                    $this->db->updBiggestWin($id, $money);
+                }
+                $this->db->updWinStats($id,$allMoney);
+                return $this->db->transferMoney($id, $activeMoney, $user['bank']);
+            }
+            return ['error','8'];
+        }
     }
 ?>

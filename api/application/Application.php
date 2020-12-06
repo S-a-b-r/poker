@@ -203,12 +203,21 @@
         ///////////////////GAME///////////////////////////////
         //////////////////////////////////////////////////////
 
-        //public function checkCombination($params){
-        //    if($params['cards']){
-        //        return $this->game->checkCombination($params['cards']);
-        //    }
-        //    return false;
-        //}
+
+        //POST
+
+        public function winner($params){
+            if($params['id'] && $params['money']){
+                return $this->game->winner($params['id'],$params['money']);
+            }
+            return ['error','8'];
+        }
+        public function checkCombination(){
+            return $this->game->checkCombination();
+        }
+
+
+        //GET
 
         public function getRandomCard($params){
             if($params['n']){
