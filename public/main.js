@@ -45,6 +45,12 @@ var transferToBankButton = document.getElementById('transferToBankButton');
 
 var checkCombinationButton = document.getElementById('checkCombination');
 
+var getCookieButton = document.getElementById('getCookie');
+
+getCookieButton.addEventListener('click',()=>{
+    console.log(document.cookie);
+})
+
 checkCombinationButton.addEventListener('click',()=>{
     const promise = checkCombination();
     promise.then(onDataReceived);

@@ -85,8 +85,20 @@ class DB {
         return ['ok','true'];
     }
 
+    public function updBiggestLoss($id, $money){
+        $stmt = $this->db->prepare("UPDATE `stats` SET `biggest_loss`='$money' WHERE `user_id`='$id'");
+        $stmt->execute();
+        return ['ok','true'];
+    }
+
     public function updWinStats($id, $money){
         $stmt = $this->db->prepare("UPDATE `stats` SET `win`='$money' WHERE `user_id`='$id'");
+        $stmt->execute();
+        return ['ok','true'];
+    }
+
+    public function updLossStats($id, $money){
+        $stmt = $this->db->prepare("UPDATE `stats` SET `loss`='$money' WHERE `user_id`='$id'");
         $stmt->execute();
         return ['ok','true'];
     }

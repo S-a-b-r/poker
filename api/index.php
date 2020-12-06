@@ -20,7 +20,8 @@
                 case 'transfertomoney': return $app->transferToMoney($params);
                 case 'transfertobank': return $app->transferToBank($params);
                 case 'checkcombination': return $app->checkCombination();//Написать доки
-                case 'winner': return $app->winner($params);
+                case 'winner': return $app->winner($params);//Написать доки
+                case 'loser': return $app->loser($params);//Написать доки
 
                 //GET
                 case 'getalltables': return $app ->getAllTables();

@@ -212,10 +212,19 @@
             }
             return ['error','8'];
         }
+
+        public function loser($params){
+            if($params['id'] && $params['money']){
+                return $this->game->loser($params['id'],$params['money']);
+            }
+            return ['error','8'];
+        }
+
         public function checkCombination(){
             return $this->game->checkCombination();
         }
 
+        
 
         //GET
 

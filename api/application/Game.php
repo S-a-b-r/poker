@@ -77,7 +77,33 @@
             $gameCards = $this->getRandomCard(7);
             $volume  = array_column($gameCards, 'v');
             array_multisort($volume, SORT_DESC, $gameCards);
-            if($gameCard[0]['v']==14)
+            $result;
+            if($gameCard[0]['v'] == 14 &&
+            $gameCard[1]['v'] == 13 && 
+            $gameCard[2]['v'] == 12 && 
+            $gameCard[3]['v'] == 11 && 
+            $gameCard[4]['v'] == 10 && 
+            $gameCard[4]['s'] == $gameCard[3]['s'] &&
+            $gameCard[3]['s'] == $gameCard[2]['s'] &&
+            $gameCard[2]['s'] == $gameCard[1]['s'] &&
+            $gameCard[1]['s'] == $gameCard[0]['s']
+            ){
+                $result = 'F-R';
+            }
+            elseif(
+            $gameCard[0]['v'] == 14 &&
+            $gameCard[1]['v'] == 13 && 
+            $gameCard[2]['v'] == 12 && 
+            $gameCard[3]['v'] == 11 && 
+            $gameCard[4]['v'] == 10 && 
+            $gameCard[4]['s'] == $gameCard[3]['s'] &&
+            $gameCard[3]['s'] == $gameCard[2]['s'] &&
+            $gameCard[2]['s'] == $gameCard[1]['s'] &&
+            $gameCard[1]['s'] == $gameCard[0]['s']
+            )
+
+
+            $gameCard[] = $result;
             return ['ok',$gameCards];
         }
 
@@ -91,6 +117,22 @@
                     $this->db->updBiggestWin($id, $money);
                 }
                 $this->db->updWinStats($id,$allMoney);
+                return $this->db->transferMoney($id, $activeMoney, $user['bank']);
+            }
+            return ['error','8'];
+        }
+
+        public function loser($id,$money){
+            $user = $this->db->getUserById($id);
+            $stats = $this->db->getStatsById($id);
+            if($user && $stats){
+                if($user['money'])
+                $activeMoney = $user['money'] - $money;
+                $allMoney = $stats['loss'] + $money;
+                if($stats['biggest_loss'] < $money){
+                    $this->db->updBiggestLoss($id, $money);
+                }
+                $this->db->updLossStats($id,$allMoney);
                 return $this->db->transferMoney($id, $activeMoney, $user['bank']);
             }
             return ['error','8'];
