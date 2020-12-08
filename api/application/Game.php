@@ -85,22 +85,21 @@
                 }
             }
             if($checkFlash){
-                if($arr[$checkFlashSuit][0] == 14 && $arr[$checkFlashSuit][4] == 10){
+                if($arr[$checkFlashSuit][0]['v'] == 14 && $arr[$checkFlashSuit][4]['v'] == 10){
                     return ['ok', 10];//Флеш-рояль
                 }
-                else if(
-                    ($arr[$checkFlashSuit][0] == 13 && $arr[$checkFlashSuit][4] == 9) ||
-                    ($arr[$checkFlashSuit][0] == 12 && $arr[$checkFlashSuit][4] == 8) ||
-                    ($arr[$checkFlashSuit][0] == 11 && $arr[$checkFlashSuit][4] == 7) ||
-                    ($arr[$checkFlashSuit][0] == 10 && $arr[$checkFlashSuit][4] == 6) ||
-                    ($arr[$checkFlashSuit][0] == 9  && $arr[$checkFlashSuit][4] == 5) ||
-                    ($arr[$checkFlashSuit][0] == 8  && $arr[$checkFlashSuit][4] == 4) ||
-                    ($arr[$checkFlashSuit][0] == 7  && $arr[$checkFlashSuit][4] == 3) ||
-                    ($arr[$checkFlashSuit][0] == 6  && $arr[$checkFlashSuit][4] == 2)
-                ){
-                    return ['ok', 9];//Стрит флеш
-                }
                 else{
+                    $values = [];
+                    for($i = 0; $i < count($arr[$checkFlashSuit]); $i++){
+                        $values[] = $arr[$checkFlashSuit][$i]['v'];
+                    }
+                    for($i = 0; $i < count($values)-4; $i++){
+                        for($j = 14; $j > 6; $j--){
+                            if($values[$i] == $j && $values[$i+4] == $j-4){
+                                return ['ok', 9];//Стрит-флеш
+                            }
+                        }
+                    }
                     return ['ok', 6];//just флеш
                 }
             }
@@ -141,34 +140,16 @@
 
                 //Проверка на стрит
                 $uniq = array_unique($values);
-                if(
-                    ($uniq[0] == 14 && $uniq[4] == 10) ||
-                    ($uniq[0] == 13 && $uniq[4] == 9) ||
-                    ($uniq[0] == 12 && $uniq[4] == 8) ||
-                    ($uniq[0] == 11 && $uniq[4] == 7) ||
-                    ($uniq[0] == 10 && $uniq[4] == 6) ||
-                    ($uniq[0] == 9  && $uniq[4] == 5) ||
-                    ($uniq[0] == 8  && $uniq[4] == 4) ||
-                    ($uniq[0] == 7  && $uniq[4] == 3) ||
-                    ($uniq[0] == 6  && $uniq[4] == 2)
-                ){
-                    return ['ok', 5];//Стрит
+                for($i = 0; $i < count($uniq)-4; $i++){
+                    for($j = 14; $j > 6; $j--){
+                        if($uniq[$i] == $j && $uniq[$i+4] == $j-4){
+                            return ['ok', 5];
+                        }
+                    }
                 }
-                
+
                 return ['ok', 1];
             }
-            $result;//Помещаем комбинацию в эту переменную
-            //$gameCard[] = $result;
-
-
-
-
-
-
-
-
-
-            return ['ok', $gameCards];//ГРИША, БЛЯТЬ, НЕ ТРОГАЙ ЭТо
         }
 
         public function divArrayOnSuit($arr){
