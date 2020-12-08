@@ -68,45 +68,102 @@
                 $i = rand (0, $m);
                 $m--;
                 $gameCard[] = $allCards[$i];
-                array_slice($allCards, $i);
+                array_splice($allCards, $i, 1);
             }
             return $gameCard;
         }
 
         public function checkCombination(){
             $gameCards = $this->getRandomCard(7);
-            $volume  = array_column($gameCards, 'v');
-            array_multisort($volume, SORT_DESC, $gameCards);
-            $result;
-            if($gameCard[0]['v'] == 14 &&
-            $gameCard[1]['v'] == 13 && 
-            $gameCard[2]['v'] == 12 && 
-            $gameCard[3]['v'] == 11 && 
-            $gameCard[4]['v'] == 10 && 
-            $gameCard[4]['s'] == $gameCard[3]['s'] &&
-            $gameCard[3]['s'] == $gameCard[2]['s'] &&
-            $gameCard[2]['s'] == $gameCard[1]['s'] &&
-            $gameCard[1]['s'] == $gameCard[0]['s']
-            ){
-                $result = 'F-R';
+            $arr = $this->divArrayOnSuit($gameCards);
+            $checkFlash = false;
+            $checkFlashSuit;
+            for($i=0;$i<4;$i++){
+                if(count($arr[$i]) >= 5){
+                    $checkFlash = true;
+                    $checkFlashSuit = $i;
+                }
             }
-            elseif(
-            $gameCard[0]['v'] == 14 &&
-            $gameCard[1]['v'] == 13 && 
-            $gameCard[2]['v'] == 12 && 
-            $gameCard[3]['v'] == 11 && 
-            $gameCard[4]['v'] == 10 && 
-            $gameCard[4]['s'] == $gameCard[3]['s'] &&
-            $gameCard[3]['s'] == $gameCard[2]['s'] &&
-            $gameCard[2]['s'] == $gameCard[1]['s'] &&
-            $gameCard[1]['s'] == $gameCard[0]['s']
-            )
+            if($checkFlash){
+                if($arr[$checkFlashSuit][0] == 14 && $arr[$checkFlashSuit][4] == 10){
+                    return ['ok', 10];//Флеш-рояль
+                }
+                else if(
+                    ($arr[$checkFlashSuit][0] == 13 && $arr[$checkFlashSuit][4] == 9) ||
+                    ($arr[$checkFlashSuit][0] == 12 && $arr[$checkFlashSuit][4] == 8) ||
+                    ($arr[$checkFlashSuit][0] == 11 && $arr[$checkFlashSuit][4] == 7) ||
+                    ($arr[$checkFlashSuit][0] == 10 && $arr[$checkFlashSuit][4] == 6) ||
+                    ($arr[$checkFlashSuit][0] == 9  && $arr[$checkFlashSuit][4] == 5) ||
+                    ($arr[$checkFlashSuit][0] == 8  && $arr[$checkFlashSuit][4] == 4) ||
+                    ($arr[$checkFlashSuit][0] == 7  && $arr[$checkFlashSuit][4] == 3) ||
+                    ($arr[$checkFlashSuit][0] == 6  && $arr[$checkFlashSuit][4] == 2)
+                ){
+                    return ['ok', 9];//Стрит флеш
+                }
+                else{
+                    return ['ok', 6];//just флеш
+                }
+            }
+            else{
+                $value = array_column($gameCards, 'v');
+                array_multisort($value, SORT_DESC, $gameCards);
 
 
-            $gameCard[] = $result;
-            return ['ok',$gameCards];
+                $values = [];
+                for($i = 0; $i < count($gameCards); $i++){
+                    $values[] = $gameCards[$i]['v'];
+                }
+                $arr2 =array_count_values ($values);
+                //for($i = 2; $i < 15;$i++){
+                //}
+
+                return ['ok', $arr2];
+            }
+            $result;//Помещаем комбинацию в эту переменную
+            //$gameCard[] = $result;
+
+
+
+
+
+
+
+
+
+            return ['ok', $gameCards];//ГРИША, БЛЯТЬ, НЕ ТРОГАЙ ЭТо
         }
 
+        public function divArrayOnSuit($arr){
+            $arrH = [];
+            $arrD = [];
+            $arrC = [];
+            $arrS = [];
+            for($i=0; $i<count($arr); $i++){
+                if($arr[$i]['s'] == 'H'){
+                    $arrH[] = $arr[$i];
+                }
+                elseif($arr[$i]['s'] == 'D'){
+                    $arrD[] = $arr[$i];
+                }
+                elseif($arr[$i]['s'] == 'C'){
+                    $arrC[] = $arr[$i];
+                }
+                elseif($arr[$i]['s'] == 'S'){
+                    $arrS[] = $arr[$i];
+                }
+            }
+
+            $value1 = array_column($arrH, 'v');
+            array_multisort($value1, SORT_DESC, $arrH);
+            $value2 = array_column($arrD, 'v');
+            array_multisort($value2, SORT_DESC, $arrD);
+            $value3 = array_column($arrC, 'v');
+            array_multisort($value3, SORT_DESC, $arrC);
+            $value4 = array_column($arrS, 'v');
+            array_multisort($value4, SORT_DESC, $arrS);
+
+            return [$arrH,$arrD,$arrC,$arrS];
+        }
         public function winner($id,$money){
             $user = $this->db->getUserById($id);
             $stats = $this->db->getStatsById($id);
