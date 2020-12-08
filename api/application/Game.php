@@ -105,19 +105,57 @@
                 }
             }
             else{
+                //Сортируем все карты по значению v
                 $value = array_column($gameCards, 'v');
                 array_multisort($value, SORT_DESC, $gameCards);
 
 
-                $values = [];
+                $values = [];//Фигачим массив, который содержит только value карт
                 for($i = 0; $i < count($gameCards); $i++){
                     $values[] = $gameCards[$i]['v'];
                 }
-                $arr2 =array_count_values ($values);
-                //for($i = 2; $i < 15;$i++){
-                //}
+                $arr2 = array_count_values ($values);//Массив, который считает кол-во повторяющихся карт
 
-                return ['ok', $arr2];
+                //Проверка на КАРЕ, СЕТ, ПАРА, ДВЕ ПАРЫ, ФУЛЛ ХАУС;
+                foreach($arr2 as $key1 => $va1){
+                    if($va1 == 4){
+                        return ['ok', 8];//Каре
+                    }
+                    elseif($va1 == 3){
+                        foreach($arr2 as $va2){
+                            if($va2 == 2){
+                                return ['ok',7];//Фулл Хаус
+                            }
+                        }
+                        return ['ok',4];//Сет -  триплет
+                    }
+                    elseif($va1 == 2){
+                        foreach($arr2 as $key2 => $va2){
+                            if($va2 == 2 && $key2 != $key1){
+                                return ['ok', 3];//Две пары
+                            }
+                        }
+                        return ['ok', 2];//Пара
+                    }
+                }
+
+                //Проверка на стрит
+                $uniq = array_unique($values);
+                if(
+                    ($uniq[0] == 14 && $uniq[4] == 10) ||
+                    ($uniq[0] == 13 && $uniq[4] == 9) ||
+                    ($uniq[0] == 12 && $uniq[4] == 8) ||
+                    ($uniq[0] == 11 && $uniq[4] == 7) ||
+                    ($uniq[0] == 10 && $uniq[4] == 6) ||
+                    ($uniq[0] == 9  && $uniq[4] == 5) ||
+                    ($uniq[0] == 8  && $uniq[4] == 4) ||
+                    ($uniq[0] == 7  && $uniq[4] == 3) ||
+                    ($uniq[0] == 6  && $uniq[4] == 2)
+                ){
+                    return ['ok', 5];//Стрит
+                }
+                
+                return ['ok', 1];
             }
             $result;//Помещаем комбинацию в эту переменную
             //$gameCard[] = $result;
