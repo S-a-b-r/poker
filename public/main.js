@@ -5,7 +5,9 @@
 //}
 //
 //const data = await request();
-token = 'b59fe3f951b6b4872e75e9ddaf89d8ae';
+let token = document.cookie;
+token = token.slice(6, 10000)
+console.log(token);
 
 var registrationButton = document.getElementById('registration');
 var login1 = document.getElementById('login1');

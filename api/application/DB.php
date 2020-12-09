@@ -28,7 +28,7 @@ class DB {
     public function updateToken($id, $token) {
         $stmt = $this->db->prepare("UPDATE users SET token='$token' WHERE id='$id'");
         $stmt->execute();
-        return ['ok', 'true'];
+        return true;
     }
 
     public function registrationUser($login, $password, $token, $nickname){
@@ -37,13 +37,13 @@ class DB {
         $stmt->fetch();
         $stmt2 = $this->db->prepare("INSERT INTO `stats` ( `win`, `loss`, `biggest_win`, `biggest_loss`) VALUES (0,0,0,0)");
         $stmt2->execute();
-        return ['ok', 'true'];
+        return true;
     }
 
     public function transferMoney($id, $activeMoney, $bank){
         $stmt = $this->db->prepare("UPDATE `users` SET `money`=$activeMoney,`bank`=$bank WHERE `id` = $id");
         $stmt->execute();
-        return ['ok', 'true'];
+        return true;
     }
 
     //GET
@@ -82,25 +82,25 @@ class DB {
     public function updBiggestWin($id, $money){
         $stmt = $this->db->prepare("UPDATE `stats` SET `biggest_win`='$money' WHERE `user_id`='$id'");
         $stmt->execute();
-        return ['ok','true'];
+        return true;
     }
 
     public function updBiggestLoss($id, $money){
         $stmt = $this->db->prepare("UPDATE `stats` SET `biggest_loss`='$money' WHERE `user_id`='$id'");
         $stmt->execute();
-        return ['ok','true'];
+        return true;
     }
 
     public function updWinStats($id, $money){
         $stmt = $this->db->prepare("UPDATE `stats` SET `win`='$money' WHERE `user_id`='$id'");
         $stmt->execute();
-        return ['ok','true'];
+        return true;
     }
 
     public function updLossStats($id, $money){
         $stmt = $this->db->prepare("UPDATE `stats` SET `loss`='$money' WHERE `user_id`='$id'");
         $stmt->execute();
-        return ['ok','true'];
+        return true;
     }
 
     //GET
@@ -120,7 +120,7 @@ class DB {
     public function deleteTableById($id){
         $stmt = $this->db->prepare("DELETE FROM `tables` WHERE id='$id'");
         $stmt->execute();
-        return ['ok', 'true'];
+        return true;
     }
 
     public function createTable($name, $quant, $rates, $password, $userId){
@@ -132,35 +132,29 @@ class DB {
             $stmt = $this->db->prepare("INSERT INTO `tables`(`name`, `quantity_players`, `active_players_id`, `rates`) VALUES ('$name','$quant','$userId','$rates')");
             $stmt->execute();
         }
-        return ['ok', 'true'];
+        return true;
     }
 
     public function connectToTable($userId, $tableId){
         $players = $this->getTableById($tableId)['active_players_id'];
-        if($players){
-            $players = $players." $userId";
-            $stmt = $this->db->prepare("UPDATE `tables` SET `active_players_id`='$players' WHERE id='$tableId'");
-            $stmt->execute();
-            return ['ok', 'true'];
-        }
-        return ['error', '11']; //Игроков за столом нет
+        $players = $players." $userId";
+        $stmt = $this->db->prepare("UPDATE `tables` SET `active_players_id`='$players' WHERE id='$tableId'");
+        $stmt->execute();
+        return true;
     }
 
     public function disconnectFromTable($userId, $tableId){
         $players = $this->getTableById($tableId)['active_players_id'];
-        if($players){
-            $players = explode(" ",$players);
-            for($i = 0; $i < count($players); $i++){
-                if($players[$i] == $userId){
-                    array_splice ($players, $i ,1);
-                }
+        $players = explode(" ",$players);
+        for($i = 0; $i < count($players); $i++){
+            if($players[$i] == $userId){
+                array_splice ($players, $i ,1);
             }
-            $players = implode(" ", $players);
-            $stmt = $this->db->prepare("UPDATE `tables` SET `active_players_id`='$players' WHERE id='$tableId'");
-            $stmt->execute();
-            return ['ok', 'true'];
         }
-        return ['error', '11']; //Игроков за столом нет
+        $players = implode(" ", $players);
+        $stmt = $this->db->prepare("UPDATE `tables` SET `active_players_id`='$players' WHERE id='$tableId'");
+        $stmt->execute();
+        return true;
     }
 
 
@@ -177,6 +171,14 @@ class DB {
         $stmt = $this->db->prepare("SELECT * FROM tables WHERE id='$id'");
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getQuantPlayersOnTable($id){
+        $stmt = $this->db->prepare("SELECT `active_players_id` FROM tables WHERE id='$id'");
+        $stmt->execute();
+        $players = $stmt->fetch(PDO::FETCH_ASSOC)['active_players_id'];
+        $players = explode(" ", $players);
+        return count($players);
     }
 }
 ?>

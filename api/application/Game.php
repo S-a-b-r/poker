@@ -183,6 +183,7 @@
 
             return [$arrH,$arrD,$arrC,$arrS];
         }
+
         public function winner($id,$money){
             $user = $this->db->getUserById($id);
             $stats = $this->db->getStatsById($id);
@@ -193,7 +194,7 @@
                     $this->db->updBiggestWin($id, $money);
                 }
                 $this->db->updWinStats($id,$allMoney);
-                return $this->db->transferMoney($id, $activeMoney, $user['bank']);
+                return ['ok',$this->db->transferMoney($id, $activeMoney, $user['bank'])];
             }
             return ['error','8'];
         }
@@ -209,7 +210,7 @@
                     $this->db->updBiggestLoss($id, $money);
                 }
                 $this->db->updLossStats($id,$allMoney);
-                return $this->db->transferMoney($id, $activeMoney, $user['bank']);
+                return ['ok',$this->db->transferMoney($id, $activeMoney, $user['bank'])];
             }
             return ['error','8'];
         }

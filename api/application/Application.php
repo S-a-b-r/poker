@@ -10,6 +10,7 @@
             $this->user = new User();
             $this->table = new Table();
             $this->game = new Game();
+            $this->db = new DB();
         }
 
 
@@ -148,11 +149,11 @@
         public function connectToTable($params){
             $token = $params['token'];
             $tableId = $params['id'];
-            $user = $this->user->getUserByToken($token);
+            $user = $this->db->getUserByToken($token);
             if($user){
-                $tables = $this->table->getTableById($tableId);
+                $tables = $this->db->getTableById($tableId);
                 if($tables){
-                    $quant = $this->table->getQuantPlayersOnTable($tableId);
+                    $quant = $this->db->getQuantPlayersOnTable($tableId);
                     if($quant < $tables['quantity_players']){
                         return $this->table->connectToTable($user['id'], $tableId);//прописать
                     }

@@ -8,24 +8,24 @@
         //POST
 
         public function deleteTableById($id){
-            return $this->db->deleteTableById($id);
+            return ['ok',$this->db->deleteTableById($id)];
         }
 
         public function createTable($token,$name, $quant, $rates, $password){
             $userId = $this->db->getUserByToken($token)['id'];
-            return $this->db->createTable($name, $quant, $rates, $password, $userId);
+            return ['ok',$this->db->createTable($name, $quant, $rates, $password, $userId)];
         }
 
         public function connectToTable($userId, $tableId){
-            return $this->db->connectToTable($userId, $tableId);
+            return ['ok',$this->db->connectToTable($userId, $tableId)];
         }
 
         public function disconnectFromTable($userId, $tableId){
             $quant = $this->getQuantPlayersOnTable($tableId);
             if($quant == 1){
-                return $this->db->deleteTableById($tableId);
+                return ['ok', $this->db->deleteTableById($tableId)];
             }
-            return $this->db->disconnectFromTable($userId,$tableId);
+            return ['ok', $this->db->disconnectFromTable($userId,$tableId)];
         }
 
 
@@ -33,17 +33,15 @@
         //GET
 
         public function getQuantPlayersOnTable($id){
-            $players = $this->db->getTableById($id)['active_players_id'];
-            $players = explode(" ", $players);
-            return count($players);
+            return ['ok', $this->db->getQuantPlayersOnTable($id)];
         }
 
         public function getAllTables(){
-            return $this->db->getAllTables();
+            return ['ok', $this->db->getAllTables()];
         }
 
         public function getTableById($id){
-            return $this->db->getTableById($id);
+            return ['ok', $this->db->getTableById($id)];
         }
     }
 ?>
