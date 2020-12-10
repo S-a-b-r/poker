@@ -86,7 +86,7 @@
             }
             if($checkFlash){
                 if($arr[$checkFlashSuit][0]['v'] == 14 && $arr[$checkFlashSuit][4]['v'] == 10){
-                    return ['ok', 10];//Флеш-рояль
+                    return 10;//Флеш-рояль
                 }
                 else{
                     $values = [];
@@ -96,11 +96,11 @@
                     for($i = 0; $i < count($values)-4; $i++){
                         for($j = 14; $j > 6; $j--){
                             if($values[$i] == $j && $values[$i+4] == $j-4){
-                                return ['ok', 9];//Стрит-флеш
+                                return  9;//Стрит-флеш
                             }
                         }
                     }
-                    return ['ok', 6];//just флеш
+                    return 6;//just флеш
                 }
             }
             else{
@@ -118,23 +118,23 @@
                 //Проверка на КАРЕ, СЕТ, ПАРА, ДВЕ ПАРЫ, ФУЛЛ ХАУС;
                 foreach($arr2 as $key1 => $va1){
                     if($va1 == 4){
-                        return ['ok', 8];//Каре
+                        return 8;//Каре
                     }
                     elseif($va1 == 3){
                         foreach($arr2 as $va2){
                             if($va2 == 2){
-                                return ['ok',7];//Фулл Хаус
+                                return 7;//Фулл Хаус
                             }
                         }
-                        return ['ok',4];//Сет -  триплет
+                        return 4;//Сет -  триплет
                     }
                     elseif($va1 == 2){
                         foreach($arr2 as $key2 => $va2){
                             if($va2 == 2 && $key2 != $key1){
-                                return ['ok', 3];//Две пары
+                                return 3;//Две пары
                             }
                         }
-                        return ['ok', 2];//Пара
+                        return 2;//Пара
                     }
                 }
 
@@ -143,12 +143,12 @@
                 for($i = 0; $i < count($uniq)-4; $i++){
                     for($j = 14; $j > 6; $j--){
                         if($uniq[$i] == $j && $uniq[$i+4] == $j-4){
-                            return ['ok', 5];
+                            return 5;
                         }
                     }
                 }
 
-                return ['ok', 1];
+                return 1;
             }
         }
 
@@ -194,7 +194,7 @@
                     $this->db->updBiggestWin($id, $money);
                 }
                 $this->db->updWinStats($id,$allMoney);
-                return ['ok',$this->db->transferMoney($id, $activeMoney, $user['bank'])];
+                return $this->db->transferMoney($id, $activeMoney, $user['bank']);
             }
             return ['error','8'];
         }
@@ -210,7 +210,7 @@
                     $this->db->updBiggestLoss($id, $money);
                 }
                 $this->db->updLossStats($id,$allMoney);
-                return ['ok',$this->db->transferMoney($id, $activeMoney, $user['bank'])];
+                return $this->db->transferMoney($id, $activeMoney, $user['bank']);
             }
             return ['error','8'];
         }

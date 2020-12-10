@@ -17,7 +17,7 @@
                     $token = md5($user['password'].$rand);
                     $this->db->updateToken($user['id'], $token);
                     $this->cookie->updateTokenInCookie($token);
-                    return ['ok', $token];
+                    return $token;
                 }
                 return ['error', '13']; //Введен неверный пароль
             }
@@ -29,7 +29,7 @@
             if($user){
                 $this->db->updateToken($user['id'], null);
                 $this->cookie->deleteTokenInCookie();
-                return ['ok', true];
+                return true;
             }
             return ['error','6']; //Не произведен вход в аккаунт
         }
@@ -39,7 +39,7 @@
                 return ['error','1'];//Пользователь с таким логином существует
             }
             $password = md5($login.$password.$this->secret);
-            return ['ok',$this->db->registrationUser($login, $password, null, $nickname)];
+            return $this->db->registrationUser($login, $password, null, $nickname);
         }
 
         public function transferToMoney($token, $money){
@@ -48,7 +48,7 @@
                 if((int)$user['bank'] >= $money){
                     $activeMoney = $user['money'] + $money;
                     $bank = (int)$user['bank'] - $money;
-                    return ['ok', $this->db->transferMoney($user['id'], $activeMoney, $bank)];
+                    return $this->db->transferMoney($user['id'], $activeMoney, $bank);
                 }
                 return ['error', '7']; //  Недостаточно средств на счету
             }
@@ -61,7 +61,7 @@
                 if((int)$user['money'] >= $money){
                     $activeMoney = $user['money'] - $money;
                     $bank = (int)$user['bank'] + $money;
-                    return ['ok', $this->db->transferMoney($user['id'], $activeMoney, $bank)];
+                    return $this->db->transferMoney($user['id'], $activeMoney, $bank);
                 }
                 return ['error', '7']; //  Недостаточно средств на счету
             }
@@ -73,17 +73,17 @@
         //GET
 
         public function getUserByToken($token){
-            return ['ok', $this->db->getUserByToken($token)];
+            return $this->db->getUserByToken($token);
         }
 
         public function getUserById($id){
-            return ['ok', $this->db->getuserbyid($id)];
+            return $this->db->getuserbyid($id);
         }
 
         public function getStatsById($id){
             $user = $this->db->getUserById($id);
             if($user){
-                return ['ok', $this->db->getStatsById($id)];
+                return $this->db->getStatsById($id);
             }
             return ['error','6']; //Не произведен вход в аккаунт
         }

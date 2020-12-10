@@ -37,13 +37,18 @@
     }
 
     function answer($data){
-        if($data[0]!='error'){
-            return array('result'=>'ok', 'data'=>$data[1]);
+        if(gettype($data) == 'array'){
+            if($data[0]){
+                if($data[0]=='error'){
+                    return array('result'=>'error', 'data'=>'error'.$data[1]);
+                }
+            }
+            return array('result'=>'ok', 'data'=>$data);
         }
         else if(!$data){
             return array('result'=>'error');
         }
-        return array('result'=>'error', 'data'=>'error'.$data[1]);
+        return array('result'=>'ok', 'data'=>$data);
     }
 
     if($_GET){
