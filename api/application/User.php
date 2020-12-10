@@ -34,12 +34,12 @@
             return ['error','6']; //Не произведен вход в аккаунт
         }
 //
-        public function registration($login,$password,$nickname){
+        public function registration($login,$password,$nickname, $avatar){
             if($this->db->getUserByLogin($login)){
                 return ['error','1'];//Пользователь с таким логином существует
             }
             $password = md5($login.$password.$this->secret);
-            return $this->db->registrationUser($login, $password, null, $nickname);
+            return $this->db->registrationUser($login, $password, null, $nickname, $avatar);
         }
 
         public function transferToMoney($token, $money){

@@ -51,7 +51,7 @@
                 return ['error', '4']; // Никнейм слишком короткий
             }
             
-            return $this->user->registration($login,$password,$nickname);
+            return $this->user->registration($login,$password,$nickname,$params['avatar']);
         }
 
         public function transferToMoney($params){

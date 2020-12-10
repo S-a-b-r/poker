@@ -13,6 +13,9 @@ var registrationButton = document.getElementById('registration');
 var login1 = document.getElementById('login1');
 var password1 = document.getElementById('password1');
 var nickname1 = document.getElementById('nickname1');
+var img1 = document.getElementById('ava1');
+var img2 = document.getElementById('ava2');
+var img3 = document.getElementById('ava3');
 
 var loginButton = document.getElementById('logining');
 var login2 = document.getElementById('login2');
@@ -80,7 +83,17 @@ connectToTableButton.addEventListener('click',()=>{
 
 
 registrationButton.addEventListener('click',()=>{
-    const promise = registration(login1.value,password1.value,nickname1.value);
+    var img;
+    if(img1.checked){
+        img = "1.jpeg";
+    }
+    else if(img2.checked){
+        img = "2.png";
+    }
+    else if(img3.checked){
+        img = "3.jpg";
+    }
+    const promise = registration(login1.value,password1.value,nickname1.value, img);
     promise.then(onDataReceived);
 });
 

@@ -31,8 +31,8 @@ class DB {
         return true;
     }
 
-    public function registrationUser($login, $password, $token, $nickname){
-        $stmt = $this->db->prepare("INSERT INTO `users` ( `login`, `password`,`token`, `nickname`, `money`, `bank`) VALUES ('$login','$password','$token','$nickname', 1000, 0)");
+    public function registrationUser($login, $password, $token, $nickname, $avatar){
+        $stmt = $this->db->prepare("INSERT INTO `users` ( `login`, `password`,`token`, `nickname`,`avatar`, `money`, `bank`) VALUES ('$login','$password','$token','$nickname','$avatar', 1000, 0)");
         $stmt->execute();
         $stmt->fetch();
         $stmt2 = $this->db->prepare("INSERT INTO `stats` ( `win`, `loss`, `biggest_win`, `biggest_loss`) VALUES (0,0,0,0)");
