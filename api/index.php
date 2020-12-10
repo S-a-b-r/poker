@@ -38,10 +38,8 @@
 
     function answer($data){
         if(gettype($data) == 'array'){
-            if($data[0]){
-                if($data[0]=='error'){
-                    return array('result'=>'error', 'data'=>'error'.$data[1]);
-                }
+            if($data[0]=='error'){
+                return array('result'=>'error', 'data'=>'error'.$data[1]);
             }
             return array('result'=>'ok', 'data'=>$data);
         }
