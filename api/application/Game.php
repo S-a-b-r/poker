@@ -143,12 +143,12 @@
                 for($i = 0; $i < count($uniq)-4; $i++){
                     for($j = 14; $j > 6; $j--){
                         if($uniq[$i] == $j && $uniq[$i+4] == $j-4){
-                            return 5;
+                            return 5;//Стрит
                         }
                     }
                 }
 
-                return 1;
+                return 1;//Старшая карта
             }
         }
 

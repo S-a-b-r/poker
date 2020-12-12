@@ -224,7 +224,7 @@
             return $this->game->checkCombination();
         }
 
-        
+
 
         //GET
 
