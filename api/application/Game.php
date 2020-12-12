@@ -184,6 +184,16 @@
             return [$arrH,$arrD,$arrC,$arrS];
         }
 
+        //Ходы
+
+        public function fald(){}
+
+        public function raise(){}
+
+        public function call(){}
+
+        public function check(){}
+
         public function winner($id,$money){
             $user = $this->db->getUserById($id);
             $stats = $this->db->getStatsById($id);
