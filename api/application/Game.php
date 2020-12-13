@@ -185,6 +185,7 @@
         }
 
         //Ходы
+        public function start(){}
 
         public function fald(){}
 
