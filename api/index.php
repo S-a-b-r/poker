@@ -1,6 +1,6 @@
 <?php
     header('Access-Control-Allow-Origin: *');
-    error_reporting(-1);
+    error_reporting(E_ALL & ~E_NOTICE);
     require_once('application/Application.php');
     //comment from grisha
 

@@ -198,7 +198,6 @@
 
 
 
-
         //////////////////////////////////////////////////////
         ///////////////////GAME///////////////////////////////
         //////////////////////////////////////////////////////
@@ -222,6 +221,13 @@
 
         public function checkCombination(){
             return $this->game->checkCombination();
+        }
+
+        public function startGame($params){
+            if($params['idtable']){
+                return $this->game->startGame($params['idtable']);
+            }
+            return ['error', '8'];
         }
 
         

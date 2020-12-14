@@ -29,6 +29,12 @@ function checkCombination(){
     });
 }
 
+function startGame(idTable){
+    const promise = axios.get('http://localhost/api/index.php?method=startgame&idtable=' + idTable);
+    return promise.then((response) =>{
+        return response.data;
+    });
+}
 function transferToMoney(token, money){
     const promise = axios.get('http://localhost/api/index.php?method=transfertomoney&token=' + token + '&money=' + money);
     return promise.then((response) =>{

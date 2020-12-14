@@ -49,6 +49,14 @@ var checkCombinationButton = document.getElementById('checkCombination');
 
 var getCookieButton = document.getElementById('getCookie');
 
+var tableForGame = document.getElementById('idTableForGame');
+var buttonStartGame = document.getElementById('buttonStartGame');
+
+buttonStartGame.addEventListener('click',()=>{
+    const promise = startGame(tableForGame.value);
+    promise.then(onDataReceived);
+})
+
 getCookieButton.addEventListener('click',()=>{
     console.log(document.cookie);
 })

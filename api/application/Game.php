@@ -185,7 +185,17 @@
         }
 
         //Ходы
-        public function start(){}
+        public function startGame($tableId){
+            $table = $this->db->getTableById($tableId);
+            $players = explode(" ",$table['active_players_id']);
+            if(count($players) < 2){
+                return ['error','14'];
+            }
+            $cards = $this->getRandomCard(5 + count($players)*2);
+            $closeCards = array_slice($cards, 0, 5);
+            //return $this->db->startGame();
+            return $closeCards;
+        }
 
         public function fald(){}
 
