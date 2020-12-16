@@ -52,6 +52,14 @@ var getCookieButton = document.getElementById('getCookie');
 var tableForGame = document.getElementById('idTableForGame');
 var buttonStartGame = document.getElementById('buttonStartGame');
 
+var getGameId = document.getElementById('getGame');
+var getGameButton = document.getElementById('getGameButton');
+
+getGameButton.addEventListener('click',()=>{
+    const promise = getGame(getGameId.value);
+    promise.then(onDataReceived);
+})
+
 buttonStartGame.addEventListener('click',()=>{
     const promise = startGame(tableForGame.value);
     promise.then(onDataReceived);

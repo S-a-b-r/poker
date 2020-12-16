@@ -180,5 +180,52 @@ class DB {
         $players = explode(" ", $players);
         return count($players);
     }
+
+
+
+
+
+    ////////////////////////////////////////////////
+    ///////////////////PLAYER///////////////////////
+    ////////////////////////////////////////////////
+
+
+    public function createPlayer($card1, $card2, $combination, $rates){
+        $stmt = $this->db->prepare("INSERT INTO `players` (  `card1`, `card2`, `comb`, `rates`) VALUES ('$card1','$card2','$combination','$rates')");
+        $stmt->execute();
+        return $this->db->lastInsertId();
+    }
+
+
+    //GET
+
+    public function getPlayer($id){
+        $stmt = $this->db->prepare("SELECT * FROM `players` WHERE `id`=$id");
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+
+
+    ////////////////////////////////////////////////
+    ///////////////////GAME/////////////////////////
+    ////////////////////////////////////////////////
+
+    public function createGame($tableId, $closeCards, $active,  $player1, $player2, $player3, $player4, $player5, $player6, $player7){
+        $stmt = $this->db->prepare("INSERT INTO `games`(`table_id`, `all_rates`, `board_cards`, `close_cards`, `circle`, `active`, `player1`, `player2`, `player3`, `player4`, `player5`, `player6`, `player7`) VALUES ('$tableId', '0' , null, '$closeCards', '0', '$active', '$player1', '$player2', '$player3', '$player4', '$player5', '$player6', '$player7')");
+        $stmt->execute();
+        return true;
+    }
+
+
+
+
+    //GET
+
+    public function getGame($id){
+        $stmt = $this->db->prepare("SELECT * FROM `games` WHERE `id`=$id");
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }
 ?>

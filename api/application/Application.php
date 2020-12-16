@@ -240,5 +240,12 @@
             }
             return $this->game->getRandomCard(5);
         }
+
+        public function getGame($params){
+            if($params['id']){
+                return $this->game->getGame($params['id']);
+            }
+            return ['error','8'];
+        }
     }
 ?>

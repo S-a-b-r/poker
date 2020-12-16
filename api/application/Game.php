@@ -73,8 +73,7 @@
             return $gameCard;
         }
 
-        public function checkCombination(){
-            $gameCards = $this->getRandomCard(7);
+        public function checkCombination($gameCards){
             $arr = $this->divArrayOnSuit($gameCards);
             $checkFlash = false;
             $checkFlashSuit;
@@ -184,20 +183,89 @@
             return [$arrH,$arrD,$arrC,$arrS];
         }
 
-        //Ходы
+        public function createPlayer($card1, $card2, $combination, $rates){
+            if($card1 && $card2 && $combination){
+                return $this->db->createPlayer($card1, $card2, $combination, $rates);
+            }
+            return ['error', '15'];
+        }
+        
         public function startGame($tableId){
             $table = $this->db->getTableById($tableId);
-            $players = explode(" ",$table['active_players_id']);
-            if(count($players) < 2){
+            $playersId = explode(" ",$table['active_players_id']);
+            if(count($playersId) < 2){
                 return ['error','14'];
             }
-            $cards = $this->getRandomCard(5 + count($players)*2);
+            $cards = $this->getRandomCard(5 + count($playersId)*2);
             $closeCards = array_slice($cards, 0, 5);
-            //return $this->db->startGame();
-            return $closeCards;
+            $playersCards = array_slice($cards, 5, count($playersId)*2);
+            $players = [];//Все игроки
+            $closeCardsStr;
+            for($i = 0; $i< 5; $i++){
+                $closeCardsStr .= $this->cardToString($closeCards[$i])." ";
+            }
+            
+
+            for($i = 0; $i < count($playersId); $i++){
+                $cardForComb = $closeCards;
+                $cardForComb[] = $playersCards[0];
+                $cardForComb[] = $playersCards[1];
+                $player = $this->db->createPlayer( $this->cardToString($playersCards[0]), $this->cardToString($playersCards[1]), $this->checkCombination($cardForComb), 0);
+                $players[] = $player;
+                array_splice($playersCards, 0, 2);
+            }
+            return $this->db->createGame($tableId, $closeCardsStr, $players[0], $players[0], $players[1], $players[2], $players[3], $players[4], $players[5], $players[6]);
         }
 
-        public function fald(){}
+        public function cardToString($card){
+            return $card['v'].":".$card['s'];
+        }
+        public function stringToCard($str){
+            $card = explode(":", $str);
+            $result['v'] = $card[0];
+            $result['s'] = $card[1];
+            return  $result;
+        }
+
+        public function getGame($id){
+            $game = $this->db->getGame($id);
+            for($i = 1; $i < 8; $i++){
+                $game['player'.$i] = $this->db->getPlayer($game['player'.$i]);
+            }
+
+            for($i = 1; $i < 8; $i++){
+                for($j = 1; $j < 3; $j++){
+                    if($game['player'.$i]){
+                        $game['player'.$i]['card'.$j] = $this->stringToCard($game['player'.$i]['card'.$j]);
+                    }
+                }
+            }
+
+
+            $game['board_cards'] = array_slice(explode(" ", $game['board_cards']), 0, 5) ;
+
+            for($i = 0; $i < 5; $i++){
+                if($game['board_cards'][$i]){
+                    $game['board_cards'][$i] = $this->stringToCard($game['board_cards'][$i]);
+                }
+            }
+
+            $game['close_cards'] = array_slice(explode(" ", $game['close_cards']), 0, 5) ;
+
+            for($i = 0; $i < 5; $i++){
+                if($game['close_cards'][$i]){
+                    $game['close_cards'][$i] = $this->stringToCard($game['close_cards'][$i]);
+                }
+            }
+
+
+            //$game['player1']['card1'] = $this->stringToCard($game['player1']['card1']);
+            //$game['player1']['card2'] = $this->stringToCard($game['player1']['card2']);
+            return $game;
+        }
+
+        //Ходы
+        public function fold(){}
 
         public function raise(){}
 

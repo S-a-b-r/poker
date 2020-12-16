@@ -23,6 +23,7 @@
                 case 'winner': return $app->winner($params);//Написать доки
                 case 'loser': return $app->loser($params);//Написать доки
                 case 'startgame': return $app->startGame($params);
+                case 'getgame': return $app->getGame($params);
 
                 //GET
                 case 'getalltables': return $app ->getAllTables();
