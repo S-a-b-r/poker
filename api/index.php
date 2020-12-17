@@ -19,20 +19,21 @@
                 case 'disconnectfromtable': return $app->disconnectFromTable($params);
                 case 'transfertomoney': return $app->transferToMoney($params);
                 case 'transfertobank': return $app->transferToBank($params);
-                case 'checkcombination': return $app->checkCombination();//Написать доки
-                case 'winner': return $app->winner($params);//Написать доки
-                case 'loser': return $app->loser($params);//Написать доки
-                case 'startgame': return $app->startGame($params);
-                case 'getgame': return $app->getGame($params);
+                case 'checkcombination': return $app->checkCombination();//for admin
+                case 'winner': return $app->winner($params);//for admin
+                case 'loser': return $app->loser($params);//for admin
+                case 'startgame': return $app->startGame($params);//Написать доки
+                
 
                 //GET
                 case 'getalltables': return $app ->getAllTables();
                 case 'getuserbytoken': return $app ->getUserByToken($params);//for admin
                 case 'getuserbyid': return $app->getUserById($params);
                 case 'gettablebyid': return $app ->getTableById($params);
-                case 'getrandomcard': return $app->getRandomCard($params);//обновить доки!
+                case 'getrandomcard': return $app->getRandomCard($params);//for admin
                 case 'getquantplayersontable': return $app->getQuantPlayersOnTable($params);
                 case 'getstatsbyid': return $app->getStatsById($params);
+                case 'getgame': return $app->getGame($params);//написать доки
             }
         }
         return false;

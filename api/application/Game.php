@@ -265,7 +265,10 @@
         }
 
         //Ходы
-        public function fold(){}
+        public function fold($idGame, $idPlayer){
+            $player = $this->db->getPlayer($idPlayer);
+            return $this->db->foldPlayer($idPlayer);
+        }
 
         public function raise(){}
 

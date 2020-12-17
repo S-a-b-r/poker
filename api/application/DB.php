@@ -212,9 +212,9 @@ class DB {
     ////////////////////////////////////////////////
 
     public function createGame($tableId, $closeCards, $active,  $player1, $player2, $player3, $player4, $player5, $player6, $player7){
-        $stmt = $this->db->prepare("INSERT INTO `games`(`table_id`, `all_rates`, `board_cards`, `close_cards`, `circle`, `active`, `player1`, `player2`, `player3`, `player4`, `player5`, `player6`, `player7`) VALUES ('$tableId', '0' , null, '$closeCards', '0', '$active', '$player1', '$player2', '$player3', '$player4', '$player5', '$player6', '$player7')");
+        $stmt = $this->db->prepare("INSERT INTO `games`(`table_id`, `all_rates`, `board_cards`, `close_cards`, `circle`, `start_circle`, `active`, `player1`, `player2`, `player3`, `player4`, `player5`, `player6`, `player7`) VALUES ('$tableId', '0' , null, '$closeCards', '0', '$player1','$active', '$player1', '$player2', '$player3', '$player4', '$player5', '$player6', '$player7')");
         $stmt->execute();
-        return true;
+        return $this->db->lastInsertId();
     }
 
 
