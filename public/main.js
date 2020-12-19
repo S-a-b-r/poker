@@ -54,6 +54,12 @@ var buttonStartGame = document.getElementById('buttonStartGame');
 
 var getGameId = document.getElementById('getGame');
 var getGameButton = document.getElementById('getGameButton');
+var foldButton = document.getElementById('foldButton');
+
+foldButton.addEventListener('click', ()=>{
+    const promise = fold(getGameId.value);
+    promise.then(onDataReceived);
+})
 
 getGameButton.addEventListener('click',()=>{
     const promise = getGame(getGameId.value);

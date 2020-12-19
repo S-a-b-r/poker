@@ -11,6 +11,13 @@ function registration(login,password,nickname){
     });
 }
 
+function fold(gameId){
+    const promise = axios.get('http://localhost/api/index.php?method=fold&id=' +gameId);
+    return promise.then((response) =>{
+        return response.data;
+    });
+}
+
 function checkCombination(){
     const params = new URLSearchParams();
     params.append('method','checkcombination');

@@ -217,6 +217,18 @@ class DB {
         return $this->db->lastInsertId();
     }
 
+    public function setActive($gameId, $active){
+        $stmt = $this->db->prepare("UPDATE `games` SET `active`='$active' WHERE `id`='$gameId'");
+        $stmt->execute();
+        return true;
+    }
+
+    public function foldPlayer($gameId, $player){
+        $stmt = $this->db->prepare("UPDATE `games` SET `$player`='' WHERE `id`='$gameId'");
+        $stmt->execute();
+        return true;
+    }
+
 
 
 

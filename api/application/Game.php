@@ -265,9 +265,15 @@
         }
 
         //Ходы
-        public function fold($idGame, $idPlayer){
-            $player = $this->db->getPlayer($idPlayer);
-            return $this->db->foldPlayer($idPlayer);
+        public function fold($gameId){
+            $game = $this->db->getGame($gameId);
+            
+            for($i = 1; $i < 8; $i++){
+                if($game['player'.$i] == $game['active']){
+                    $this->db->foldPlayer($gameId, 'player'.$i);
+                }
+            }
+            return $this->circle($gameId);
         }
 
         public function raise(){}
@@ -276,6 +282,23 @@
 
         public function check(){}
 
+        //Переключение на следующего игрока
+        private function circle($gameId){
+            $game = $this->db->getGame($gameId);
+            $act = $game['active'];
+            $players = [];
+            for($i = 1; $i < 8; $i++){
+                if($game['player'.$i]){
+                    $players[] = $game['player'.$i];
+                }
+            }
+            for($i = 0; $i < count($players) - 1; $i++){
+                if($players[$i] == $act){
+                    return $this->db->setActive($gameId, $players[$i+1]);
+                }
+            }
+            return $this->db->setActive($gameId, $players[0]);
+        }
         public function winner($id,$money){
             $user = $this->db->getUserById($id);
             $stats = $this->db->getStatsById($id);

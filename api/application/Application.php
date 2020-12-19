@@ -230,6 +230,9 @@
             return ['error', '8'];
         }
 
+        public function fold($params){
+            return $this->game->fold($params['id']);
+        }
         
 
         //GET
