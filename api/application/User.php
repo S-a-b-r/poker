@@ -17,7 +17,7 @@
                     $token = md5($user['password'].$rand);
                     $this->db->updateToken($user['id'], $token);
                     $this->cookie->updateTokenInCookie($token);
-                    return $login;
+                    return $token;
                 }
                 return ['error', '13']; //Введен неверный пароль
             }

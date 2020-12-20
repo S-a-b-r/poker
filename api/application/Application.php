@@ -233,6 +233,10 @@
         public function fold($params){
             return $this->game->fold($params['id']);
         }
+
+        public function check($params){
+            return $this->game->check($params['id']);
+        }
         
 
         //GET

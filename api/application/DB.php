@@ -229,6 +229,12 @@ class DB {
         return true;
     }
 
+    public function nextCircle($gameId, $circle){
+        $stmt = $this->db->prepare("UPDATE `games` SET `circle`='$circle' WHERE `id`='$gameId'");
+        $stmt->execute();
+        return true;
+    }
+
 
 
 

@@ -267,6 +267,7 @@
         //Ходы
         public function fold($gameId){
             $game = $this->db->getGame($gameId);
+            $this->nextCircle($gameId);
             
             for($i = 1; $i < 8; $i++){
                 if($game['player'.$i] == $game['active']){
@@ -276,11 +277,30 @@
             return $this->circle($gameId);
         }
 
-        public function raise(){}
+        public function raise(){
+            $game = $this->db->getGame($gameId);
+            return $this->circle($gameId);
+        }
 
-        public function call(){}
+        public function call(){
+            $game = $this->db->getGame($gameId);
+            $this->nextCircle($gameId);
+            return $this->circle($gameId);
+        }
 
-        public function check(){}
+        public function check($gameId){
+            $this->nextCircle($gameId);
+            return $this->circle($gameId);
+        }
+
+        public function nextCircle($gameId){
+            $game = $this->db->getGame($gameId);
+            if($game['active'] == $game['start_circle']){
+                return $this->db->nextCircle($gameId, $game['circle'] + 1);
+                
+            }
+            return true;
+        }
 
         //Переключение на следующего игрока
         private function circle($gameId){

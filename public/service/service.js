@@ -11,12 +11,7 @@ function registration(login,password,nickname){
     });
 }
 
-function fold(gameId){
-    const promise = axios.get('http://localhost/api/index.php?method=fold&id=' +gameId);
-    return promise.then((response) =>{
-        return response.data;
-    });
-}
+
 
 function checkCombination(){
     const params = new URLSearchParams();
@@ -31,6 +26,20 @@ function checkCombination(){
     //    [{'v':  4, 's': 'D'}]
     //])
     const promise = axios.post('http://localhost/api/index.php', params);
+    return promise.then((response) =>{
+        return response.data;
+    });
+}
+
+function fold(id){
+    const promise = axios.get('http://localhost/api/index.php?method=fold&id=' +id);
+    return promise.then((response) =>{
+        return response.data;
+    });
+}
+
+function check(id){
+    const promise = axios.get('http://localhost/api/index.php?method=check&id=' + id);
     return promise.then((response) =>{
         return response.data;
     });

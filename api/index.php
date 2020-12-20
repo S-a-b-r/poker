@@ -24,6 +24,7 @@
                 case 'loser': return $app->loser($params);//for admin
                 case 'startgame': return $app->startGame($params);//Написать доки
                 case 'fold': return $app->fold($params);//Написать доки
+                case 'check': return $app->check($params);//Написать доки
                 
 
                 //GET
