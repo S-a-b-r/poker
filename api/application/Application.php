@@ -237,6 +237,22 @@
         public function check($params){
             return $this->game->check($params['id']);
         }
+
+        public function raise($params){
+            if($params['id'] && $params['sum']){
+                return $this->game->raise($params['id'], $params['sum']);
+            }
+            elseif($params['id']){
+                return $this->game->raise($params['id'], 20);
+            }
+            return ['error','8'];
+        }
+
+        public function call($params){
+            if($params['id']){
+                return $this->game->call($params['id']);
+            }
+        }
         
 
         //GET

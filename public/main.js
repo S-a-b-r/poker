@@ -56,6 +56,20 @@ var getGameId = document.getElementById('getGame');
 var getGameButton = document.getElementById('getGameButton');
 var foldButton = document.getElementById('foldButton');
 var checkButton = document.getElementById('checkButton');
+var raiseButton = document.getElementById('raiseButton');
+var sumRaise = document.getElementById('sumRaise');
+var callButton = document.getElementById('callButton');
+
+callButton.addEventListener('click',()=>{
+    const promise = call(getGameId.value);
+    promise.then(onDataReceived);
+})
+
+
+raiseButton.addEventListener('click',()=>{
+    const promise = raise(getGameId.value, sumRaise.value);
+    promise.then(onDataReceived);
+})
 
 checkButton.addEventListener('click',()=>{
     const promise = check(getGameId.value);

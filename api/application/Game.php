@@ -183,9 +183,9 @@
             return [$arrH,$arrD,$arrC,$arrS];
         }
 
-        public function createPlayer($card1, $card2, $combination, $rates){
+        public function createPlayer($userId, $card1, $card2, $combination, $rates){
             if($card1 && $card2 && $combination){
-                return $this->db->createPlayer($card1, $card2, $combination, $rates);
+                return $this->db->createPlayer($userId, $card1, $card2, $combination, $rates);
             }
             return ['error', '15'];
         }
@@ -204,13 +204,12 @@
             for($i = 0; $i< 5; $i++){
                 $closeCardsStr .= $this->cardToString($closeCards[$i])." ";
             }
-            
 
             for($i = 0; $i < count($playersId); $i++){
                 $cardForComb = $closeCards;
                 $cardForComb[] = $playersCards[0];
                 $cardForComb[] = $playersCards[1];
-                $player = $this->db->createPlayer( $this->cardToString($playersCards[0]), $this->cardToString($playersCards[1]), $this->checkCombination($cardForComb), 0);
+                $player = $this->db->createPlayer( $playersId[$i], $this->cardToString($playersCards[0]), $this->cardToString($playersCards[1]), $this->checkCombination($cardForComb), 0);
                 $players[] = $player;
                 array_splice($playersCards, 0, 2);
             }
@@ -274,16 +273,69 @@
                     $this->db->foldPlayer($gameId, 'player'.$i);
                 }
             }
+            
             return $this->circle($gameId);
         }
 
-        public function raise(){
+        public function raiseMoney($gameId, $sum){
             $game = $this->db->getGame($gameId);
+            $playerId = $game['active'];
+            $player = $this->db->getPlayer($playerId);
+            $user = $this->db->getUserById($player['user_id']);
+            $money = $user['money'];
+            //Добавить all in;
+            if($sum > $money){
+                $sum = $money;
+            }
+            $this->db->updMoney($user['id'], $user['money'] - $sum);
+            $this->db->updRatesPlayer($playerId, $player['rates'] + $sum);
+            return $this->db->updRatesGame($gameId, $game['all_rates'] + $sum);
+        }
+
+        public function raise($gameId, $sum){
+            //$game = $this->db->getGame($gameId);
+            //$playerId = $game['active'];
+            //$player = $this->db->getPlayer($playerId);
+            //$user = $this->db->getUserById($player['user_id']);
+            //$money = $user['money'];
+            ////Добавить all in;
+            //if($sum > $money){
+            //    $sum = $money;
+            //}
+            //$this->db->updMoney($user['id'], $user['money'] - $sum);
+            //$this->db->updRatesPlayer($playerId, $player['rates'] + $sum);
+            //$this->db->updRatesGame($gameId, $game['all_rates'] + $sum);
+
+            $this->raiseMoney($gameId, $sum);
+
+            $this->nextCircle($gameId);
+            $this->setStartCircle($gameId);
             return $this->circle($gameId);
         }
 
-        public function call(){
+        public function call($gameId){
             $game = $this->db->getGame($gameId);
+            $act = $game['active'];
+            $players = [];
+
+            for($i = 1; $i < 8; $i++){
+                if($game['player'.$i]){
+                    $players[] = $game['player'.$i];
+                }
+            }
+
+            $prevPlayerId = $players[count($players)-1];
+
+            for($i = 1; $i < count($players); $i++){
+                if($players[$i] == $act){
+                    $prevPlayer = $players[$i-1];
+                }
+            }
+
+            $prevPlayer =  $this->db->getPlayer($prevPlayerId);
+            return $prevPlayer;
+            $sum = $prevPlayer['rates'];
+            $this->raiseMoney($gameId, $sum);
             $this->nextCircle($gameId);
             return $this->circle($gameId);
         }
@@ -292,6 +344,12 @@
             $this->nextCircle($gameId);
             return $this->circle($gameId);
         }
+
+        public function setStartCircle($gameId){
+            $playerId = $this->db->getGame($gameId)['active'];
+            return $this->db->setStartCircle($gameId, $playerId);
+        }
+
 
         public function nextCircle($gameId){
             $game = $this->db->getGame($gameId);
@@ -346,6 +404,7 @@
                 }
                 $this->db->updLossStats($id,$allMoney);
                 return $this->db->transferMoney($id, $activeMoney, $user['bank']);
+                //Написать получение денег с банка
             }
             return ['error','8'];
         }

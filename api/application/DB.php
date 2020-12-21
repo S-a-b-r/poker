@@ -46,6 +46,12 @@ class DB {
         return true;
     }
 
+    public function updMoney($userId, $sum){
+        $stmt = $this->db->prepare("UPDATE `users` SET `money` = $sum WHERE `id` = $userId ");
+        $stmt->execute();
+        return true;
+    }
+
     //GET
 
     public function getUserByLogin($login) {
@@ -190,10 +196,16 @@ class DB {
     ////////////////////////////////////////////////
 
 
-    public function createPlayer($card1, $card2, $combination, $rates){
-        $stmt = $this->db->prepare("INSERT INTO `players` (  `card1`, `card2`, `comb`, `rates`) VALUES ('$card1','$card2','$combination','$rates')");
+    public function createPlayer($userId, $card1, $card2, $combination, $rates){
+        $stmt = $this->db->prepare("INSERT INTO `players` (  `user_id`, `card1`, `card2`, `comb`, `rates`) VALUES ('$userId','$card1','$card2','$combination','$rates')");
         $stmt->execute();
         return $this->db->lastInsertId();
+    }
+
+    public function updRatesPlayer($playerId, $sum){
+        $stmt = $this->db->prepare("UPDATE `players` SET `rates` = $sum WHERE `id` = $playerId ");
+        $stmt->execute();
+        return true;
     }
 
 
@@ -234,6 +246,19 @@ class DB {
         $stmt->execute();
         return true;
     }
+
+    public function setStartCircle($gameId, $playerId){
+        $stmt = $this->db->prepare("UPDATE `games` SET `start_circle`='$playerId' WHERE `id`='$gameId'");
+        $stmt->execute();
+        return true;
+    }
+
+    public function updRatesGame($gameId, $sum){
+        $stmt = $this->db->prepare("UPDATE `games` SET `all_rates` = $sum WHERE `id` = $gameId ");
+        $stmt->execute();
+        return true;
+    }
+
 
 
 

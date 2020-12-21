@@ -25,6 +25,9 @@
                 case 'startgame': return $app->startGame($params);//Написать доки
                 case 'fold': return $app->fold($params);//Написать доки
                 case 'check': return $app->check($params);//Написать доки
+                case 'raise': return $app->raise($params);//Написать доки
+                case 'call': return $app->call($params);//Написать доки
+
                 
 
                 //GET

@@ -31,6 +31,19 @@ function checkCombination(){
     });
 }
 
+function call(id){
+    const promise = axios.get('http://localhost/api/index.php?method=call&id=' + id);
+    return promise.then((response) =>{
+        return response.data;
+    });
+}
+
+function raise(id, sum){
+    const promise = axios.get('http://localhost/api/index.php?method=raise&id=' + id + '&sum=' + sum);
+    return promise.then((response) =>{
+        return response.data;
+    });
+}
 function fold(id){
     const promise = axios.get('http://localhost/api/index.php?method=fold&id=' +id);
     return promise.then((response) =>{
