@@ -259,6 +259,12 @@ class DB {
         return true;
     }
 
+    public function setCard($gameId, $boardCards, $closeCards){
+        $stmt = $this->db->prepare("UPDATE `games` SET `board_cards`='$boardCards',`close_cards`='$closeCards' WHERE `id`='$gameId'");
+        $stmt->execute();
+        return true;
+    }
+
 
 
 

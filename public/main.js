@@ -6,7 +6,18 @@
 //
 //const data = await request();
 let token = document.cookie;
-token = token.slice(6, 10000)
+i = 0;
+while(i != 100){
+    if(token[i] == ';'){
+        token = token.slice(6,i);
+    }
+    else{
+        i++;
+    }
+}
+if(token == document.cookie){
+    token = token.slice(6, 10000)
+}
 console.log(token);
 
 var registrationButton = document.getElementById('registration');

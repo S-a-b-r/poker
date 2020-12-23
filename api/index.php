@@ -14,7 +14,7 @@
                 case 'login': return $app ->login($params);
                 case 'logout': return $app ->logout($params);
                 case 'createtable': return $app ->createTable($params);
-                case 'deletetablebyid': return $app ->deleteTableById($params);//for admin
+                case 'deletetablebyid': return $app ->deleteTableById($params);//for admin Дописать победителя и прогиравшего. 
                 case 'connecttotable': return $app->connectToTable($params);
                 case 'disconnectfromtable': return $app->disconnectFromTable($params);
                 case 'transfertomoney': return $app->transferToMoney($params);
@@ -22,23 +22,23 @@
                 case 'checkcombination': return $app->checkCombination();//for admin
                 case 'winner': return $app->winner($params);//for admin
                 case 'loser': return $app->loser($params);//for admin
-                case 'startgame': return $app->startGame($params);//Написать доки
-                case 'fold': return $app->fold($params);//Написать доки
-                case 'check': return $app->check($params);//Написать доки
-                case 'raise': return $app->raise($params);//Написать доки
-                case 'call': return $app->call($params);//Написать доки
+                case 'startgame': return $app->startGame($params);
+                case 'fold': return $app->fold($params);
+                case 'check': return $app->check($params);
+                case 'raise': return $app->raise($params);
+                case 'call': return $app->call($params);
 
                 
 
                 //GET
                 case 'getalltables': return $app ->getAllTables();
-                case 'getuserbytoken': return $app ->getUserByToken($params);//for admin
+                case 'getuserbytoken': return $app ->getUserByToken($params);
                 case 'getuserbyid': return $app->getUserById($params);
                 case 'gettablebyid': return $app ->getTableById($params);
                 case 'getrandomcard': return $app->getRandomCard($params);//for admin
                 case 'getquantplayersontable': return $app->getQuantPlayersOnTable($params);
                 case 'getstatsbyid': return $app->getStatsById($params);
-                case 'getgame': return $app->getGame($params);//написать доки
+                case 'getgame': return $app->getGame($params);
             }
         }
         return false;

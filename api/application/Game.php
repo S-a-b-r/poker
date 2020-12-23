@@ -151,6 +151,7 @@
             }
         }
 
+        //Разделение массива карт на 4 массива по мастям
         public function divArrayOnSuit($arr){
             $arrH = [];
             $arrD = [];
@@ -183,6 +184,7 @@
             return [$arrH,$arrD,$arrC,$arrS];
         }
 
+        //Создание игрока
         public function createPlayer($userId, $card1, $card2, $combination, $rates){
             if($card1 && $card2 && $combination){
                 return $this->db->createPlayer($userId, $card1, $card2, $combination, $rates);
@@ -190,6 +192,7 @@
             return ['error', '15'];
         }
         
+        //Старт игры
         public function startGame($tableId){
             $table = $this->db->getTableById($tableId);
             $playersId = explode(" ",$table['active_players_id']);
@@ -213,12 +216,14 @@
                 $players[] = $player;
                 array_splice($playersCards, 0, 2);
             }
-            return $this->db->createGame($tableId, $closeCardsStr, $players[0], $players[0], $players[1], $players[2], $players[3], $players[4], $players[5], $players[6]);
+            return $this->db->createGame($tableId, $closeCardsStr, $players[1], $players[0], $players[1], $players[2], $players[3], $players[4], $players[5], $players[6]);
         }
 
+        //Преобразование карты в строку(Для хранения в БД)
         public function cardToString($card){
             return $card['v'].":".$card['s'];
         }
+        //Обратное преобразование из строки в карту
         public function stringToCard($str){
             $card = explode(":", $str);
             $result['v'] = $card[0];
@@ -226,6 +231,7 @@
             return  $result;
         }
 
+        //Получение игры из БД и преобразование в нормальный вид
         public function getGame($id){
             $game = $this->db->getGame($id);
             for($i = 1; $i < 8; $i++){
@@ -263,6 +269,25 @@
             return $game;
         }
 
+        
+
+        //Выдать деньги
+        public function raiseMoney($gameId, $sum){
+            $game = $this->db->getGame($gameId);
+            $playerId = $game['active'];
+            $player = $this->db->getPlayer($playerId);
+            $user = $this->db->getUserById($player['user_id']);
+            $money = $user['money'];
+            //Добавить all in;
+            //СРОЧНО ДОБАВИТЬ all in;
+            if($sum > $money){
+                $sum = $money;
+            }
+            $this->db->updMoney($user['id'], $user['money'] - $sum);
+            $this->db->updRatesPlayer($playerId, $player['rates'] + $sum);
+            return $this->db->updRatesGame($gameId, $game['all_rates'] + $sum);
+        }
+
         //Ходы
         public function fold($gameId){
             $game = $this->db->getGame($gameId);
@@ -277,37 +302,8 @@
             return $this->circle($gameId);
         }
 
-        public function raiseMoney($gameId, $sum){
-            $game = $this->db->getGame($gameId);
-            $playerId = $game['active'];
-            $player = $this->db->getPlayer($playerId);
-            $user = $this->db->getUserById($player['user_id']);
-            $money = $user['money'];
-            //Добавить all in;
-            if($sum > $money){
-                $sum = $money;
-            }
-            $this->db->updMoney($user['id'], $user['money'] - $sum);
-            $this->db->updRatesPlayer($playerId, $player['rates'] + $sum);
-            return $this->db->updRatesGame($gameId, $game['all_rates'] + $sum);
-        }
-
         public function raise($gameId, $sum){
-            //$game = $this->db->getGame($gameId);
-            //$playerId = $game['active'];
-            //$player = $this->db->getPlayer($playerId);
-            //$user = $this->db->getUserById($player['user_id']);
-            //$money = $user['money'];
-            ////Добавить all in;
-            //if($sum > $money){
-            //    $sum = $money;
-            //}
-            //$this->db->updMoney($user['id'], $user['money'] - $sum);
-            //$this->db->updRatesPlayer($playerId, $player['rates'] + $sum);
-            //$this->db->updRatesGame($gameId, $game['all_rates'] + $sum);
-
             $this->raiseMoney($gameId, $sum);
-
             $this->nextCircle($gameId);
             $this->setStartCircle($gameId);
             return $this->circle($gameId);
@@ -328,13 +324,13 @@
 
             for($i = 1; $i < count($players); $i++){
                 if($players[$i] == $act){
-                    $prevPlayer = $players[$i-1];
+                    $prevPlayerId = $players[$i-1];
                 }
             }
 
             $prevPlayer =  $this->db->getPlayer($prevPlayerId);
-            return $prevPlayer;
-            $sum = $prevPlayer['rates'];
+            //return $prevPlayer;
+            $sum = $prevPlayer['rates'] - $this->db->getPlayer($act)['rates'] ;
             $this->raiseMoney($gameId, $sum);
             $this->nextCircle($gameId);
             return $this->circle($gameId);
@@ -345,19 +341,45 @@
             return $this->circle($gameId);
         }
 
+        //Переопределение начала круга(Для повышения)
         public function setStartCircle($gameId){
             $playerId = $this->db->getGame($gameId)['active'];
             return $this->db->setStartCircle($gameId, $playerId);
         }
 
-
+        //Проверка на прохождение круга, добавление карт на стол
         public function nextCircle($gameId){
             $game = $this->db->getGame($gameId);
             if($game['active'] == $game['start_circle']){
+                if($game['circle']==1){
+                    $this->openCards($gameId, 3);
+                }
+                elseif($game['circle']==2){
+                    $this->openCards($gameId, 1);
+                }
+                elseif($game['circle']==3){
+                    $this->openCards($gameId, 1);
+                }
                 return $this->db->nextCircle($gameId, $game['circle'] + 1);
                 
             }
             return true;
+        }
+
+        //Открытие карт, повернутых "рубашкой"
+        public function openCards($gameId, $count){
+            $game = $this->db->getGame($gameId);
+            $closeCards = $game['close_cards'];
+            $closeCards = explode(' ',$closeCards);
+            $activeCards = $game['board_cards'];//Карты, которые уже находятся на столе
+            for($i = 0; $i < $count; $i++){
+                $activeCards.= $closeCards[$i]." ";
+            }
+            array_splice($closeCards, 0, $count);
+            for($i = 0; $i < count($closeCards); $i++){
+                $cards.= $closeCards[$i]." ";
+            }
+            return $this->db->setCard($gameId, $activeCards, $cards);
         }
 
         //Переключение на следующего игрока
@@ -377,7 +399,23 @@
             }
             return $this->db->setActive($gameId, $players[0]);
         }
-        public function winner($id,$money){
+
+        public function getWinner($gameId){
+            $game = $this->getGame($gameId);
+            
+            $players = [];
+            for($i = 1; $i < 8; $i++){
+                if($game['player'.$i]){
+                    $players[] = $game['player'.$i];
+                }
+            }
+            for($i = 0; count($player); $i++ ){
+                //Продолжить туть
+            }
+            
+        }
+
+        public function winner($id, $money){
             $user = $this->db->getUserById($id);
             $stats = $this->db->getStatsById($id);
             if($user && $stats){
