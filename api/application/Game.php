@@ -74,6 +74,7 @@
         }
 
         public function checkCombination($gameCards){
+
             $arr = $this->divArrayOnSuit($gameCards);
             $checkFlash = false;
             $checkFlashSuit;
@@ -85,7 +86,7 @@
             }
             if($checkFlash){
                 if($arr[$checkFlashSuit][0]['v'] == 14 && $arr[$checkFlashSuit][4]['v'] == 10){
-                    return 10;//Флеш-рояль
+                    return '1000';//Флеш-рояль
                 }
                 else{
                     $values = [];
@@ -93,13 +94,21 @@
                         $values[] = $arr[$checkFlashSuit][$i]['v'];
                     }
                     for($i = 0; $i < count($values)-4; $i++){
-                        for($j = 14; $j > 6; $j--){
+                        for($j = 9; $j > 6; $j--){
                             if($values[$i] == $j && $values[$i+4] == $j-4){
-                                return  9;//Стрит-флеш
+                                return  '90'.$j;//Стрит-флеш
+                            }
+                        }
+                        for($j = 14; $j > 9; $j--){
+                            if($values[$i] == $j && $values[$i+4] == $j-4){
+                                return  '9'.$j;//Стрит-флеш
                             }
                         }
                     }
-                    return 6;//just флеш
+                    if(strlen($arr[$checkFlashSuit][0]['v']) == 1){
+                        return '60'.$arr[$checkFlashSuit][0]['v'];//just флеш
+                    }
+                    return '6'.$arr[$checkFlashSuit][0]['v'];//just флеш
                 }
             }
             else{
@@ -112,42 +121,68 @@
                 for($i = 0; $i < count($gameCards); $i++){
                     $values[] = $gameCards[$i]['v'];
                 }
-                $arr2 = array_count_values ($values);//Массив, который считает кол-во повторяющихся карт
+                $arr2 = array_count_values($values);//Массив, который считает кол-во повторяющихся карт
 
                 //Проверка на КАРЕ, СЕТ, ПАРА, ДВЕ ПАРЫ, ФУЛЛ ХАУС;
                 foreach($arr2 as $key1 => $va1){
                     if($va1 == 4){
-                        return 8;//Каре
+                        if(strlen($key1) == 1){
+                            return '80'.$key1;//Каре
+                        }
+                        return '8'.$key1;//Каре
                     }
                     elseif($va1 == 3){
-                        foreach($arr2 as $va2){
+                        foreach($arr2 as $key2 => $va2){
                             if($va2 == 2){
-                                return 7;//Фулл Хаус
+                                if(strlen($key1) == 1){
+                                    return '70'.$key1;//Фулл хаус
+                                }
+                                return '7'.$key1;//Фулл хаус
                             }
                         }
-                        return 4;//Сет -  триплет
+                        if(strlen($key1) == 1){
+                            return '40'.$key1;//Сет -  триплет
+                        }
+                        return '4'.$key1;//Сет -  триплет
                     }
+
                     elseif($va1 == 2){
                         foreach($arr2 as $key2 => $va2){
                             if($va2 == 2 && $key2 != $key1){
-                                return 3;//Две пары
+                                if($key2 > $key1){
+                                    if(strlen($key2) == 1){
+                                        return '30'.$key2;//Две пары
+                                    }
+                                    return '3'.$key2;//Две пары
+                                }
+                                if(strlen($key1) == 1){
+                                    return '30'.$key1;//Две пары
+                                }
+                                return '3'.$key1;//Две пары
                             }
                         }
-                        return 2;//Пара
+                        if(strlen($key1) == 1){
+                            return '20'.$key1;//Пара
+                        }
+                        return '2'.$key1;//Пара
                     }
                 }
 
                 //Проверка на стрит
                 $uniq = array_unique($values);
                 for($i = 0; $i < count($uniq)-4; $i++){
-                    for($j = 14; $j > 6; $j--){
+                    for($j = 14; $j > 9; $j--){
                         if($uniq[$i] == $j && $uniq[$i+4] == $j-4){
-                            return 5;
+                            return '5'.$j;//Стрит
+                        }
+                    }
+                    for($j = 9; $j > 6; $j--){
+                        if($uniq[$i] == $j && $uniq[$i+4] == $j-4){
+                            return '50'.$j;//Стрит
                         }
                     }
                 }
-
-                return 1;
+                return '1'.$values[0];//Теперь у нас комбинации хранятся в виде **??, где ** - номер комбинации, а ?? - номер старшей карты в комбинации
             }
         }
 
@@ -291,22 +326,22 @@
         //Ходы
         public function fold($gameId){
             $game = $this->db->getGame($gameId);
-            $this->nextCircle($gameId);
+            
             
             for($i = 1; $i < 8; $i++){
                 if($game['player'.$i] == $game['active']){
                     $this->db->foldPlayer($gameId, 'player'.$i);
                 }
             }
-            
-            return $this->circle($gameId);
+            $this->circle($gameId);
+            return $this->nextCircle($gameId);
         }
 
         public function raise($gameId, $sum){
             $this->raiseMoney($gameId, $sum);
-            $this->nextCircle($gameId);
+            $this->circle($gameId);
             $this->setStartCircle($gameId);
-            return $this->circle($gameId);
+            return $this->nextCircle($gameId);
         }
 
         public function call($gameId){
@@ -330,15 +365,16 @@
 
             $prevPlayer =  $this->db->getPlayer($prevPlayerId);
             //return $prevPlayer;
-            $sum = $prevPlayer['rates'] - $this->db->getPlayer($act)['rates'] ;
+            $sum = $prevPlayer['rates'] - $this->db->getPlayer($act)['rates'];
             $this->raiseMoney($gameId, $sum);
-            $this->nextCircle($gameId);
-            return $this->circle($gameId);
+            $this->circle($gameId);
+            return $this->nextCircle($gameId);
         }
 
         public function check($gameId){
-            $this->nextCircle($gameId);
-            return $this->circle($gameId);
+            $this->circle($gameId);
+            
+            return $this->nextCircle($gameId);
         }
 
         //Переопределение начала круга(Для повышения)
@@ -360,8 +396,10 @@
                 elseif($game['circle']==3){
                     $this->openCards($gameId, 1);
                 }
+                elseif($game['circle'] == 4){
+                    return $this->getWinner($gameId);
+                }
                 return $this->db->nextCircle($gameId, $game['circle'] + 1);
-                
             }
             return true;
         }
@@ -409,9 +447,100 @@
                     $players[] = $game['player'.$i];
                 }
             }
-            for($i = 0; count($player); $i++ ){
-                //Продолжить туть
+            $winner = $players[0];
+            for($i = 1; $i < count($players); $i++){
+                if($winner['comb']<$players[$i]['comb']){
+                    $winner = $players[$i];
+                }
             }
+            $winners = [];
+            for($i = 1; $i < count($players); $i++){
+                if($winner['comb'] == $players[$i]['comb']){
+                    $winners[] = $players[$i];
+                }
+            }
+            if(count($winners)>1){
+                $winner = $winners[0];
+
+                if($winners[0]['card1']['v'] > $winners[0]['card2']['v']){
+                    $winnerValue = $winners[0]['card1']['v'];
+                }
+                else{
+                    $winnerValue = $winners[0]['card2']['v'];
+                }
+
+                //Ищем победителя
+                for($i = 1; $i < count($winners);$i++){
+                    for($j = 0; $j < 3; $j++){
+                        if($winners[$i]['card'.$j]['v'] >= $winnerValue){
+                            $winnerValue = $winners[$i]['card'.$j]['v'];
+                            $winner = $winners[$i];
+                        }
+                    }
+                }
+                for($i = 1; $i < count($winners);$i++){
+                    for($j = 0; $j < 3; $j++){
+                        if($winners[$i]['card'.$j]['v'] >= $winnerValue){
+                            $winnerValue = $winners[$i]['card'.$j]['v'];
+                            $winner = $winners[$i];
+                        }
+                    }
+                }
+                $this->winner($winner['user_id'],$game['all_rates']);
+                return $winner;
+            }
+            $this->winner($winner['user_id'], $game['all_rates']);
+            return $winner;
+
+            //$winner = $players[0];
+            //$winners = [];
+            //for($i = 1; $i < count($players); $i++){
+            //    if($winner['comb'] < $players[$i]){
+            //        $winner = $players[$i];
+            //        
+            //    }
+            //}
+            //for($i = 0; $i < count($players); $i++){
+            //    if($winner['comb'] == $players[$i]){
+            //        $winners[] = $player[$i];
+            //    }
+            //}
+//
+            ////Проверка по комбинации(если есть чел, у которого комбинация сильнее остальных)
+            //if(count($winners) == 1){
+            //    return $winner;
+            //}
+//
+            ////Проверка по значению карт(если у нескольких игроков одинаковые комбинации)
+            //else{
+            //    //Задаем по стандарту победителя(первогов массиве)
+            //    $winner = $winners[0];
+//
+            //    if($winners[0]['card1']['v'] > $winners[0]['card2']['v']){
+            //        $winnerValue = $winners[0]['card1']['v'];
+            //    }
+            //    else{
+            //        $winnerValue = $winners[0]['card2']['v'];
+            //    }
+//
+            //    //Ищем победителя
+            //    for($i = 1; $i < count($winners);$i++){
+            //        for($j = 0; $j < 3; $j++){
+            //            if($winners[$i]['card'.$j]['v'] >= $winnerValue){
+            //                $winnerValue = $winners[$i]['card'.$j]['v'];
+            //                $winner = $winners[$i];
+            //            }
+            //        }
+            //    }
+            //    for($i = 1; $i < count($winners);$i++){
+            //        for($j = 0; $j < 3; $j++){
+            //            if($winners[$i]['card'.$j]['v'] >= $winnerValue){
+            //                $winnerValue = $winners[$i]['card'.$j]['v'];
+            //                $winner = $winners[$i];
+            //            }
+            //        }
+            //    }
+            //}
             
         }
 
