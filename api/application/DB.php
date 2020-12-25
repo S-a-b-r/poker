@@ -265,6 +265,18 @@ class DB {
         return true;
     }
 
+    public function deleteGameById($gameId){
+        $stmt = $this->db->prepare("DELETE FROM `games` WHERE `id` = $gameId");
+        $stmt->execute();
+        return true;
+    }
+    
+    public function deletePlayerById($playerId){
+        $stmt = $this->db->prepare("DELETE FROM `players` WHERE `id` = $playerId");
+        $stmt->execute();
+        return true;
+    }
+
 
 
 

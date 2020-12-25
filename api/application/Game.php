@@ -3,6 +3,7 @@
         function __construct(){
             $this->db = new DB();
             $this->table = new Table();
+            $this->maxPlayers = 8;
         }
 
         protected $card = array(
@@ -269,11 +270,11 @@
         //Получение игры из БД и преобразование в нормальный вид
         public function getGame($id){
             $game = $this->db->getGame($id);
-            for($i = 1; $i < 8; $i++){
+            for($i = 1; $i < $this->maxPlayers; $i++){
                 $game['player'.$i] = $this->db->getPlayer($game['player'.$i]);
             }
 
-            for($i = 1; $i < 8; $i++){
+            for($i = 1; $i < $this->maxPlayers; $i++){
                 for($j = 1; $j < 3; $j++){
                     if($game['player'.$i]){
                         $game['player'.$i]['card'.$j] = $this->stringToCard($game['player'.$i]['card'.$j]);
@@ -326,15 +327,30 @@
         //Ходы
         public function fold($gameId){
             $game = $this->db->getGame($gameId);
-            
-            
-            for($i = 1; $i < 8; $i++){
-                if($game['player'.$i] == $game['active']){
-                    $this->db->foldPlayer($gameId, 'player'.$i);
+            $this->loser($this->db->getPlayer($game['active'])['user_id'], $this->db->getPlayer($game['active'])['rates']);
+            $count = 0;
+            for($i = 1; $i < $this->maxPlayers; $i++){
+                if($game['player'.$i]){
+                    $count++;
                 }
             }
-            $this->circle($gameId);
-            return $this->nextCircle($gameId);
+            if($count > 2){
+                for($i = 1; $i < $this->maxPlayers ; $i++){
+                    if($game['player'.$i] == $game['active']){
+                        $this->db->foldPlayer($gameId, 'player'.$i);
+                        $this->db->deletePlayerById($game['active']);
+                    }
+                }
+                $this->circle($gameId);
+                return $this->nextCircle($gameId);
+            }
+            else{           
+                $winner = $this->getWinner($gameId);
+                $newGameId = $this->startGame($game['table_id']);
+                $this->db->deletePlayerById($game['active']);
+                $this->db->deleteGameById($gameId);
+                return [$winner, $newGameId];
+            }
         }
 
         public function raise($gameId, $sum){
@@ -349,7 +365,7 @@
             $act = $game['active'];
             $players = [];
 
-            for($i = 1; $i < 8; $i++){
+            for($i = 1; $i < $this->maxPlayers; $i++){
                 if($game['player'.$i]){
                     $players[] = $game['player'.$i];
                 }
@@ -386,22 +402,33 @@
         //Проверка на прохождение круга, добавление карт на стол
         public function nextCircle($gameId){
             $game = $this->db->getGame($gameId);
-            if($game['active'] == $game['start_circle']){
-                if($game['circle']==1){
-                    $this->openCards($gameId, 3);
+            if($game){
+                if($game['active'] == $game['start_circle']){
+                    if($game['circle']==1){
+                        $this->openCards($gameId, 3);
+                    }
+                    elseif($game['circle']==2){
+                        $this->openCards($gameId, 1);
+                    }
+                    elseif($game['circle']==3){
+                        $this->openCards($gameId, 1);
+                    }
+                    elseif($game['circle'] == 4){
+                        $winner = $this->getWinner($gameId);
+                        $newGameId = $this->startGame($game['table_id']);
+                        for($i = 1; $i<= $this->maxPlayers;$i++){
+                            if($game['player'.$i]){
+                                $this->db->deletePlayerById($game['player'.$i]);
+                            }
+                        }
+                        $this->db->deleteGameById($gameId);
+                        return [$winner, $newGameId];
+                    }
+                    return $this->db->nextCircle($gameId, $game['circle'] + 1);
                 }
-                elseif($game['circle']==2){
-                    $this->openCards($gameId, 1);
-                }
-                elseif($game['circle']==3){
-                    $this->openCards($gameId, 1);
-                }
-                elseif($game['circle'] == 4){
-                    return $this->getWinner($gameId);
-                }
-                return $this->db->nextCircle($gameId, $game['circle'] + 1);
+                return true;
             }
-            return true;
+            return ['error','16'];
         }
 
         //Открытие карт, повернутых "рубашкой"
@@ -425,7 +452,7 @@
             $game = $this->db->getGame($gameId);
             $act = $game['active'];
             $players = [];
-            for($i = 1; $i < 8; $i++){
+            for($i = 1; $i < $this->maxPlayers; $i++){
                 if($game['player'.$i]){
                     $players[] = $game['player'.$i];
                 }
@@ -442,9 +469,11 @@
             $game = $this->getGame($gameId);
             
             $players = [];
-            for($i = 1; $i < 8; $i++){
+            $playersId = [];
+            for($i = 1; $i < $this->maxPlayers; $i++){
                 if($game['player'.$i]){
                     $players[] = $game['player'.$i];
+                    $playersId[] = $game['player'.$i]['id'];
                 }
             }
             $winner = $players[0];
@@ -454,12 +483,20 @@
                 }
             }
             $winners = [];
-            for($i = 1; $i < count($players); $i++){
+            $winnersId = [];
+            for($i = 0; $i < count($players); $i++){
                 if($winner['comb'] == $players[$i]['comb']){
                     $winners[] = $players[$i];
+                    $winnersId[] = $players[$i]['id'];
                 }
             }
+            $losers = array_diff ( $playersId, $winnersId);
+            for($i = 0; $i< count($losers);$i++){
+                $this->loser($this->db->getPlayer($losers[$i])['user_id'], $this->db->getPlayer($losers[$i])['rates']);
+            }
+            $losers = [];
             if(count($winners)>1){
+                $winnersId = [];
                 $winner = $winners[0];
 
                 if($winners[0]['card1']['v'] > $winners[0]['card2']['v']){
@@ -486,61 +523,15 @@
                         }
                     }
                 }
+                $losers = array_diff ( $playersId, [$winner['id']]);
+                for($i = 0; $i< count($losers);$i++){
+                    $this->loser($this->db->getPlayer($losers[$i])['user_id'], $this->db->getPlayer($losers[$i])['rates']);
+                }
                 $this->winner($winner['user_id'],$game['all_rates']);
                 return $winner;
             }
             $this->winner($winner['user_id'], $game['all_rates']);
             return $winner;
-
-            //$winner = $players[0];
-            //$winners = [];
-            //for($i = 1; $i < count($players); $i++){
-            //    if($winner['comb'] < $players[$i]){
-            //        $winner = $players[$i];
-            //        
-            //    }
-            //}
-            //for($i = 0; $i < count($players); $i++){
-            //    if($winner['comb'] == $players[$i]){
-            //        $winners[] = $player[$i];
-            //    }
-            //}
-//
-            ////Проверка по комбинации(если есть чел, у которого комбинация сильнее остальных)
-            //if(count($winners) == 1){
-            //    return $winner;
-            //}
-//
-            ////Проверка по значению карт(если у нескольких игроков одинаковые комбинации)
-            //else{
-            //    //Задаем по стандарту победителя(первогов массиве)
-            //    $winner = $winners[0];
-//
-            //    if($winners[0]['card1']['v'] > $winners[0]['card2']['v']){
-            //        $winnerValue = $winners[0]['card1']['v'];
-            //    }
-            //    else{
-            //        $winnerValue = $winners[0]['card2']['v'];
-            //    }
-//
-            //    //Ищем победителя
-            //    for($i = 1; $i < count($winners);$i++){
-            //        for($j = 0; $j < 3; $j++){
-            //            if($winners[$i]['card'.$j]['v'] >= $winnerValue){
-            //                $winnerValue = $winners[$i]['card'.$j]['v'];
-            //                $winner = $winners[$i];
-            //            }
-            //        }
-            //    }
-            //    for($i = 1; $i < count($winners);$i++){
-            //        for($j = 0; $j < 3; $j++){
-            //            if($winners[$i]['card'.$j]['v'] >= $winnerValue){
-            //                $winnerValue = $winners[$i]['card'.$j]['v'];
-            //                $winner = $winners[$i];
-            //            }
-            //        }
-            //    }
-            //}
             
         }
 
@@ -559,19 +550,16 @@
             return ['error','8'];
         }
 
-        public function loser($id,$money){
+        public function loser($id, $money){
             $user = $this->db->getUserById($id);
             $stats = $this->db->getStatsById($id);
             if($user && $stats){
-                if($user['money'])
-                $activeMoney = $user['money'] - $money;
                 $allMoney = $stats['loss'] + $money;
                 if($stats['biggest_loss'] < $money){
                     $this->db->updBiggestLoss($id, $money);
                 }
-                $this->db->updLossStats($id,$allMoney);
-                return $this->db->transferMoney($id, $activeMoney, $user['bank']);
-                //Написать получение денег с банка
+                $this->db->updLossStats($id, $allMoney);
+                return true;
             }
             return ['error','8'];
         }
