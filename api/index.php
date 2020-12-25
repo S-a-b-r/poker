@@ -14,7 +14,7 @@
                 case 'login': return $app ->login($params);
                 case 'logout': return $app ->logout($params);
                 case 'createtable': return $app ->createTable($params);
-                case 'deletetablebyid': return $app ->deleteTableById($params);//for admin Дописать победителя и прогиравшего. 
+                case 'deletetablebyid': return $app ->deleteTableById($params);//for admin
                 case 'connecttotable': return $app->connectToTable($params);
                 case 'disconnectfromtable': return $app->disconnectFromTable($params);
                 case 'transfertomoney': return $app->transferToMoney($params);
